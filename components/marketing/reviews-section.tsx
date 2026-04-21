@@ -1,43 +1,38 @@
 import Link from "next/link";
+import { ExternalLink } from "lucide-react";
 
 import { RevealOnView } from "@/components/marketing/reveal-on-view";
 import { TestimonialCard } from "@/components/marketing/testimonial-card";
+import { cn } from "@/lib/utils";
 
 const testimonials = [
   {
     name: "Dr. James Harrington",
     location: "London",
     quote:
-      "The certificate arrived within 24 hours with clear HPLC and LC-MS data. As a researcher, the transparency and detail give me complete confidence in my compounds.",
-    avatarUrl: "https://i.pravatar.cc/150?img=12",
+      "Certificate landed next working day. HPLC and LC-MS sections are laid out clearly for our batch files—we did not need to chase anyone for supplementary data.",
   },
   {
     name: "Marcus Thompson",
     location: "Birmingham",
-    quote:
-      "Finally a UK lab that actually shows you the real purity numbers. My BPC-157 came back at 99.8%. Verifypeps is now my go-to.",
-    avatarUrl: "https://i.pravatar.cc/150?img=33",
+    quote: "Sorted. QR opens the cert, figures match what we submitted. That's all I wanted.",
   },
   {
     name: "Sarah Patel",
     location: "Glasgow",
     quote:
-      "Super quick service and the certificate looks proper professional. The QR code works perfect and its reassuring knowing exactly what your getting.",
-    avatarUrl: "https://i.pravatar.cc/150?img=47",
+      "Third reference material order this year. Same layout each time, which sounds boring but it is what our internal review expects.",
   },
   {
     name: "Dr. Elena Voss",
     location: "Cambridge",
     quote:
-      "The chromatogram and peak analysis provided far exceeded my expectations. This level of independent verification is exactly what the peptide community needs.",
-    avatarUrl: "https://i.pravatar.cc/150?img=9",
+      "I was sceptical we'd get this much chromatogram detail at the turnaround we were quoted. The annotated peaks made the handover to our doc set much quicker.",
   },
   {
     name: "Ryan Brooks",
     location: "Bristol",
-    quote:
-      "Used them twice now. Both times the results were spot on and delivery was fast. Makes buying peptides online feel much safer.",
-    avatarUrl: "https://i.pravatar.cc/150?img=15",
+    quote: "Straightforward for supplier verification. No drama.",
   },
 ] as const;
 
@@ -51,10 +46,10 @@ export function ReviewsSection() {
             Customer reviews
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-[#0f172a] sm:text-4xl">
-            Trusted by Researchers &amp; Athletes
+            Trusted by UK labs &amp; researchers
           </h2>
           <p className="mt-4 text-lg text-[#334155]">
-            Real feedback from our community
+            What people say about certificates and verification
           </p>
         </RevealOnView>
 
@@ -62,14 +57,27 @@ export function ReviewsSection() {
           className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-10 lg:gap-x-12 lg:gap-y-10"
           staggerChildren
         >
-          {testimonials.map((t) => (
-            <TestimonialCard
+          {testimonials.map((t, index) => (
+            <div
               key={t.name}
-              name={t.name}
-              location={t.location}
-              quote={t.quote}
-              avatarUrl={t.avatarUrl}
-            />
+              className={cn(
+                index === testimonials.length - 1 &&
+                  "md:col-span-2 md:flex md:justify-center",
+              )}
+            >
+              <div
+                className={cn(
+                  "w-full",
+                  index === testimonials.length - 1 && "md:max-w-xl",
+                )}
+              >
+                <TestimonialCard
+                  name={t.name}
+                  location={t.location}
+                  quote={t.quote}
+                />
+              </div>
+            </div>
           ))}
         </RevealOnView>
 
@@ -78,9 +86,11 @@ export function ReviewsSection() {
             href="https://maps.google.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium text-brand-600 underline-offset-4 transition-colors hover:text-brand-500 hover:underline"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-600 underline-offset-4 transition-colors hover:text-brand-500 hover:underline"
           >
             Leave us a review on Google
+            <ExternalLink className="size-3.5 shrink-0 opacity-80" aria-hidden />
+            <span className="sr-only"> (opens in a new tab)</span>
           </Link>
         </RevealOnView>
       </div>

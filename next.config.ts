@@ -13,15 +13,6 @@ const nextConfig: NextConfig = {
   },
   // Monorepo / multiple lockfiles: trace from this project root
   outputFileTracingRoot: path.join(__dirname),
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "i.pravatar.cc",
-        pathname: "/**",
-      },
-    ],
-  },
 };
 
 export default nextConfig;
