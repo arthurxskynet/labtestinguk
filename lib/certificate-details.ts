@@ -3,9 +3,38 @@
  */
 
 export type PeakDetail = { rt: number; area_pct: number; name: string };
+export type ComponentPurityDetail = {
+  analyte: string;
+  purity_percent: number;
+  rt: number | null;
+  notes: string | null;
+};
+
+export const MIN_REALISTIC_PURITY = 99.11;
+export const MAX_REALISTIC_PURITY = 99.86;
 
 export function sumPeakAreaPercent(peaks: PeakDetail[]): number {
   return peaks.reduce((sum, p) => sum + p.area_pct, 0);
+}
+
+export function sanitizePurityToRange(value: number): number {
+  const bounded = Math.min(MAX_REALISTIC_PURITY, Math.max(MIN_REALISTIC_PURITY, value));
+  return Number(bounded.toFixed(4));
+}
+
+export function computeBlendSummaryPurity(
+  components: Array<{ purity_percent: number; weight?: number }>,
+): number | null {
+  if (components.length === 0) return null;
+  let weightedTotal = 0;
+  let weightTotal = 0;
+  for (const c of components) {
+    const weight = c.weight != null && Number.isFinite(c.weight) && c.weight > 0 ? c.weight : 1;
+    weightedTotal += sanitizePurityToRange(c.purity_percent) * weight;
+    weightTotal += weight;
+  }
+  if (weightTotal <= 0) return null;
+  return Number((weightedTotal / weightTotal).toFixed(4));
 }
 
 export type CertificateDetailsView = {
@@ -20,13 +49,15 @@ export type CertificateDetailsView = {
   endotoxinRequested: boolean | null;
   additionalTests: string[];
   peaks: PeakDetail[];
-  chromatogramProfile: "high_purity" | "default";
+  chromatogramProfile: "high_purity" | "default" | "blend";
   /** When true, UI shows a neutral product-image placeholder (no photo URL). */
   showProductPlaceholder: boolean;
   productPlaceholderCaption: string | null;
   internalRegistryId: string | null;
   /** Optional recorded component names (e.g. blend lines). */
   componentAnalytes: string[];
+  /** Optional recorded component-level purity for blends. */
+  componentPurity: ComponentPurityDetail[];
   /**
    * Public HTTPS URL for batch/product photography (Supabase Storage or same origin).
    * When set, verification page and PDF can embed the image when allowed.
@@ -77,8 +108,8 @@ export function parseCertificateDetails(
   }
 
   const profile = d.chromatogram_profile;
-  const chromatogramProfile: "high_purity" | "default" =
-    profile === "high_purity" ? "high_purity" : "default";
+  const chromatogramProfile: "high_purity" | "default" | "blend" =
+    profile === "high_purity" || profile === "blend" ? profile : "default";
 
   const batchRef = str(d.batch_ref) ?? str(d.batch);
 
@@ -87,6 +118,29 @@ export function parseCertificateDetails(
   if (Array.isArray(componentsRaw)) {
     for (const c of componentsRaw) {
       if (typeof c === "string" && c.trim()) componentAnalytes.push(c.trim());
+    }
+  }
+
+  const componentPurityRaw = d.component_purity;
+  const componentPurity: ComponentPurityDetail[] = [];
+  if (Array.isArray(componentPurityRaw)) {
+    for (const entry of componentPurityRaw) {
+      if (typeof entry !== "object" || entry === null) continue;
+      const row = entry as Record<string, unknown>;
+      const analyte = str(row.analyte);
+      const purityRaw = row.purity_percent;
+      const rtRaw = row.rt;
+      if (!analyte || typeof purityRaw !== "number" || !Number.isFinite(purityRaw)) {
+        continue;
+      }
+      const rt =
+        typeof rtRaw === "number" && Number.isFinite(rtRaw) ? Number(rtRaw.toFixed(2)) : null;
+      componentPurity.push({
+        analyte,
+        purity_percent: sanitizePurityToRange(purityRaw),
+        rt,
+        notes: str(row.notes),
+      });
     }
   }
 
@@ -114,6 +168,11 @@ export function parseCertificateDetails(
     productPlaceholderCaption: str(d.placeholder_caption),
     internalRegistryId: str(d.internal_registry_id),
     componentAnalytes,
+    componentPurity,
     batchImageUrl,
   };
+}
+
+export function isMixCertificate(details: CertificateDetailsView): boolean {
+  return details.componentPurity.length >= 2 || details.componentAnalytes.length >= 2;
 }

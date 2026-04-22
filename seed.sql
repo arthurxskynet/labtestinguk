@@ -98,7 +98,7 @@ values
   (
     'VP-A3F7B2-KPVX',
     'BPC-157',
-    99.9100,
+    99.8600,
     1419.000000,
     'Single peak HPLC; baseline resolved',
     12.500000,
@@ -117,7 +117,7 @@ values
       'placeholder_caption', 'Laboratory archive photograph not attached to this registry entry.',
       'additional_tests', jsonb_build_array('LC-MS identity', 'System suitability'),
       'peaks', jsonb_build_array(
-        jsonb_build_object('name', 'BPC-157', 'rt', 4.23, 'area_pct', 99.91),
+        jsonb_build_object('name', 'BPC-157', 'rt', 4.23, 'area_pct', 99.86),
         jsonb_build_object('name', 'Baseline', 'rt', 2.10, 'area_pct', 0.09)
       )
     )
@@ -166,7 +166,7 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
-      'chromatogram_profile', 'default',
+      'chromatogram_profile', 'blend',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP.',
       'show_product_placeholder', true,
       'placeholder_caption', 'Laboratory archive photograph not attached to this registry entry.',
@@ -235,7 +235,7 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
-      'chromatogram_profile', 'default',
+      'chromatogram_profile', 'blend',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP. Pack size variants recorded under internal SKU only.',
       'show_product_placeholder', true,
       'placeholder_caption', 'Laboratory archive photograph not attached to this registry entry.',
@@ -263,7 +263,7 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
-      'chromatogram_profile', 'high_purity',
+      'chromatogram_profile', 'blend',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP. Mass recorded as monoisotopic convention for the stated salt form.',
       'show_product_placeholder', true,
       'placeholder_caption', 'Laboratory archive photograph not attached to this registry entry.',
@@ -299,6 +299,11 @@ values
         'GHK (reference)',
         'BPC-157 (reference)',
         'TB-500 fragment (reference)'
+      ),
+      'component_purity', jsonb_build_array(
+        jsonb_build_object('analyte', 'GHK (reference)', 'purity_percent', 99.1100, 'rt', 3.76),
+        jsonb_build_object('analyte', 'BPC-157 (reference)', 'purity_percent', 99.2800, 'rt', 4.23),
+        jsonb_build_object('analyte', 'TB-500 fragment (reference)', 'purity_percent', 99.2568, 'rt', 4.08)
       ),
       'additional_tests', jsonb_build_array('LC-MS identity (representative)', 'System suitability'),
       'peaks', jsonb_build_array(
@@ -459,6 +464,10 @@ values
         'CJC-1295 without DAC (reference)',
         'Ipamorelin (reference)'
       ),
+      'component_purity', jsonb_build_array(
+        jsonb_build_object('analyte', 'CJC-1295 without DAC (reference)', 'purity_percent', 99.3900, 'rt', 4.31),
+        jsonb_build_object('analyte', 'Ipamorelin (reference)', 'purity_percent', 99.5142, 'rt', 4.14)
+      ),
       'additional_tests', jsonb_build_array('LC-MS identity (representative)', 'System suitability'),
       'peaks', jsonb_build_array(
         jsonb_build_object('name', 'Primary envelope', 'rt', 4.31, 'area_pct', 99.45),
@@ -490,6 +499,10 @@ values
       'component_analytes', jsonb_build_array(
         'BPC-157 (reference)',
         'TB-500 fragment (reference)'
+      ),
+      'component_purity', jsonb_build_array(
+        jsonb_build_object('analyte', 'BPC-157 (reference)', 'purity_percent', 99.6200, 'rt', 4.23),
+        jsonb_build_object('analyte', 'TB-500 fragment (reference)', 'purity_percent', 99.7268, 'rt', 4.08)
       ),
       'additional_tests', jsonb_build_array('LC-MS identity (representative)', 'System suitability'),
       'peaks', jsonb_build_array(

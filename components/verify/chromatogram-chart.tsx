@@ -40,6 +40,20 @@ function buildDefaultSeries(seed: number) {
   return data;
 }
 
+/** Composite multi-peak profile for blend / mixed lines. */
+function buildBlendSeries(seed: number) {
+  const data: { rt: number; intensity: number }[] = [];
+  for (let i = 0; i < POINTS; i++) {
+    const rt = Number((2 + i * 0.12).toFixed(2));
+    const p1 = Math.exp(-Math.pow((i - 18) / 3.6, 2)) * 72;
+    const p2 = Math.exp(-Math.pow((i - 30) / 4.2, 2)) * 88;
+    const p3 = Math.exp(-Math.pow((i - 44) / 4.8, 2)) * 64;
+    const noise = Math.sin(seed + i * 0.33) * 0.9;
+    data.push({ rt, intensity: Math.max(0, p1 + p2 + p3 + noise) });
+  }
+  return data;
+}
+
 const STROKE = "#0f766e";
 const FILL_TOP = "#14b8a6";
 const FILL_MID = "#10b981";
@@ -63,7 +77,7 @@ export function ChromatogramChart({
   variant = "default",
 }: {
   peptideName: string;
-  profile?: "high_purity" | "default";
+  profile?: "high_purity" | "default" | "blend";
   /** Tighter embed on marketing card: extra axis space, peak marker, softer grid. */
   variant?: "default" | "embed";
 }) {
@@ -75,7 +89,9 @@ export function ChromatogramChart({
   const data =
     profile === "high_purity"
       ? buildHighPuritySeries(seed)
-      : buildDefaultSeries(seed);
+      : profile === "blend"
+        ? buildBlendSeries(seed)
+        : buildDefaultSeries(seed);
 
   const peak = React.useMemo(() => peakFromData(data), [data]);
   const embed = variant === "embed";

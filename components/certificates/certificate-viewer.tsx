@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/table";
 import { ChromatogramChart } from "@/components/verify/chromatogram-chart";
 import {
+  isMixCertificate,
   parseCertificateDetails,
   sumPeakAreaPercent,
 } from "@/lib/certificate-details";
@@ -105,6 +106,7 @@ export function CertificateViewer({
     () => sumPeakAreaPercent(detail.peaks),
     [detail.peaks],
   );
+  const mixCertificate = React.useMemo(() => isMixCertificate(detail), [detail]);
 
   /** Same URL string used for on-screen QR and PDF (single source of truth). */
   const verifyPageUrl = React.useMemo(
@@ -200,9 +202,9 @@ export function CertificateViewer({
       const rows: [string, string][] = [
         ["Status", String(certificate.status)],
         [
-          "Purity (area %)",
+          mixCertificate ? "Blend summary purity (area %)" : "Purity (area %)",
           certificate.purity_percent != null
-            ? `${certificate.purity_percent}%`
+            ? `${Number(certificate.purity_percent).toFixed(2)}%`
             : "—",
         ],
         [
@@ -353,6 +355,35 @@ export function CertificateViewer({
         doc.setTextColor(30, 41, 59);
         for (const c of detail.componentAnalytes) {
           doc.text(`• ${c}`, margin + 2, y);
+          y += 5;
+        }
+      }
+
+      if (detail.componentPurity.length > 0) {
+        y += 4;
+        if (y > 245) {
+          doc.addPage();
+          y = 18;
+        }
+        doc.setFontSize(10);
+        doc.setTextColor(15, 118, 110);
+        doc.text("Component purity", margin, y);
+        y += 6;
+        doc.setFontSize(8);
+        doc.setTextColor(100, 116, 139);
+        doc.text("Analyte", margin, y);
+        doc.text("Purity %", margin + 85, y);
+        doc.text("RT (min)", margin + 120, y);
+        y += 5;
+        doc.setTextColor(15, 23, 42);
+        for (const c of detail.componentPurity) {
+          if (y > 285) {
+            doc.addPage();
+            y = 18;
+          }
+          doc.text(c.analyte, margin, y);
+          doc.text(c.purity_percent.toFixed(2), margin + 85, y);
+          doc.text(c.rt != null ? String(c.rt) : "—", margin + 120, y);
           y += 5;
         }
       }
@@ -533,11 +564,11 @@ export function CertificateViewer({
       >
         <div className="min-w-0 rounded-xl border border-slate-100 bg-white/90 px-3 py-2.5 text-center shadow-sm">
           <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
-            HPLC area %
+            {mixCertificate ? "Blend summary %" : "HPLC area %"}
           </p>
           <p className="mt-1 tabular-nums text-lg font-semibold text-slate-900">
             {certificate.purity_percent != null
-              ? `${certificate.purity_percent}%`
+              ? `${Number(certificate.purity_percent).toFixed(2)}%`
               : "—"}
           </p>
         </div>
@@ -579,10 +610,12 @@ export function CertificateViewer({
             <Table className="min-w-[260px] w-full">
               <TableBody>
                 <TableRow className="lg:hidden">
-                  <TableCell className="text-slate-500">Purity</TableCell>
+                  <TableCell className="text-slate-500">
+                    {mixCertificate ? "Blend summary purity" : "Purity"}
+                  </TableCell>
                   <TableCell className="text-right font-medium tabular-nums">
                     {certificate.purity_percent != null
-                      ? `${certificate.purity_percent}%`
+                      ? `${Number(certificate.purity_percent).toFixed(2)}%`
                       : "—"}
                   </TableCell>
                 </TableRow>
@@ -739,6 +772,41 @@ export function CertificateViewer({
                 <li key={name}>{name}</li>
               ))}
             </ul>
+          </CardContent>
+        </Card>
+      ) : null}
+
+      {detail.componentPurity.length > 0 ? (
+        <Card className="mt-6 rounded-2xl border-slate-200/90 bg-card shadow-sm">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">Component purity</CardTitle>
+            <CardDescription>
+              Individual analyte purity values recorded for this blend line.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="min-w-0 overflow-x-auto">
+            <Table className="min-w-[280px]">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Analyte</TableHead>
+                  <TableHead className="text-right">Purity %</TableHead>
+                  <TableHead className="text-right">RT (min)</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {detail.componentPurity.map((component) => (
+                  <TableRow key={`${component.analyte}-${component.rt ?? "na"}`}>
+                    <TableCell>{component.analyte}</TableCell>
+                    <TableCell className="text-right font-mono text-sm tabular-nums">
+                      {component.purity_percent.toFixed(2)}
+                    </TableCell>
+                    <TableCell className="text-right font-mono text-sm tabular-nums">
+                      {component.rt != null ? component.rt : "—"}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </CardContent>
         </Card>
       ) : null}

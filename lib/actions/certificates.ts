@@ -4,6 +4,10 @@ import { revalidatePath } from "next/cache";
 
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { generateCertificateCode } from "@/lib/certificate-code";
+import {
+  computeBlendSummaryPurity,
+  sanitizePurityToRange,
+} from "@/lib/certificate-details";
 import { labTestSchema } from "@/lib/validations/lab-test";
 
 export type CreateCertificateResult =
@@ -15,7 +19,7 @@ function buildSyntheticPeaks(seed: string) {
   return [
     {
       rt: Number((2.1 + (base % 10) * 0.01).toFixed(2)),
-      area_pct: 99.1 + (base % 8) / 10,
+      area_pct: 99.11 + (base % 7) / 10,
       name: "Main",
     },
     {
@@ -51,6 +55,19 @@ export async function createLabCertificate(
   }
 
   const peaks = buildSyntheticPeaks(v.peptide_name + v.batch_reference);
+  const componentPurity = (v.component_purity ?? []).map((entry) => ({
+    analyte: entry.analyte.trim(),
+    purity_percent: sanitizePurityToRange(entry.purity_percent),
+    rt: entry.rt != null ? Number(entry.rt.toFixed(2)) : null,
+    notes: entry.notes?.trim() ? entry.notes.trim() : null,
+  }));
+  const isBlend = v.is_blend;
+  const resolvedPurity =
+    isBlend && componentPurity.length > 0
+      ? computeBlendSummaryPurity(componentPurity) ?? null
+      : v.target_purity_percent != null
+        ? sanitizePurityToRange(v.target_purity_percent)
+        : null;
 
   const additional_tests: string[] = [];
   if (v.endotoxin) additional_tests.push("Endotoxin (LAL) requested");
@@ -62,8 +79,14 @@ export async function createLabCertificate(
     notes: v.notes ?? "",
     peaks,
     target_purity_percent: v.target_purity_percent,
-    chromatogram_profile:
-      v.target_purity_percent >= 99.5 ? "high_purity" : "default",
+    component_purity: componentPurity,
+    component_analytes: componentPurity.map((entry) => entry.analyte),
+    is_blend: isBlend,
+    chromatogram_profile: isBlend
+      ? "blend"
+      : (resolvedPurity ?? 0) >= 99.5
+        ? "high_purity"
+        : "default",
     additional_tests,
   };
 
@@ -72,8 +95,8 @@ export async function createLabCertificate(
     const { error } = await supabase.from("certificates").insert({
       code,
       peptide_name: v.peptide_name,
-      purity_percent: v.target_purity_percent,
-      molecular_weight: v.molecular_weight,
+      purity_percent: resolvedPurity,
+      molecular_weight: v.molecular_weight ?? null,
       hplc_purity: v.hplc_lcms_notes,
       lcms_ppm: lcmsPpmParsed,
       status: "pending",
