@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
+import { AmpoulabsNote } from "@/components/certificates/ampoulabs-note";
 import { CertificateCodeForm } from "@/components/verify/certificate-code-form";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
@@ -49,6 +50,7 @@ export function VerifyLookupHero() {
               Or view sample certificate preview
             </Link>
           </p>
+          <AmpoulabsNote className="mt-6 text-center" />
         </div>
       </div>
     </div>

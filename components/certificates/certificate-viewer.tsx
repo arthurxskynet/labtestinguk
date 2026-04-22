@@ -9,6 +9,7 @@ import QRCode from "qrcode";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { buttonVariants } from "@/components/ui/button-variants";
+import { AmpoulabsNote } from "@/components/certificates/ampoulabs-note";
 import {
   Card,
   CardContent,
@@ -926,7 +927,9 @@ export function CertificateViewer({
         </Card>
       ) : null}
 
-      <p className="mt-8 text-sm text-slate-600">
+      <AmpoulabsNote className="mt-8" />
+
+      <p className="mt-4 text-sm text-slate-600">
         Reference data is provided for laboratory research traceability only.
         It does not constitute a specification for clinical or human use.
       </p>
