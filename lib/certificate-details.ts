@@ -40,6 +40,7 @@ export function computeBlendSummaryPurity(
 export type CertificateDetailsView = {
   batch: string | null;
   batchRef: string | null;
+  testingDate: string | null;
   instrument: string | null;
   column: string | null;
   method: string | null;
@@ -75,6 +76,32 @@ function bool(v: unknown): boolean | null {
   return null;
 }
 
+function isoDate(v: unknown): string | null {
+  if (typeof v !== "string") return null;
+  const value = v.trim();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+  const [yearText, monthText, dayText] = value.split("-");
+  const year = Number(yearText);
+  const month = Number(monthText);
+  const day = Number(dayText);
+  if (
+    !Number.isInteger(year) ||
+    !Number.isInteger(month) ||
+    !Number.isInteger(day)
+  ) {
+    return null;
+  }
+  const parsed = new Date(Date.UTC(year, month - 1, day));
+  if (
+    parsed.getUTCFullYear() !== year ||
+    parsed.getUTCMonth() + 1 !== month ||
+    parsed.getUTCDate() !== day
+  ) {
+    return null;
+  }
+  return value;
+}
+
 export function parseCertificateDetails(
   details: Record<string, unknown> | null | undefined,
 ): CertificateDetailsView {
@@ -88,15 +115,21 @@ export function parseCertificateDetails(
         p !== null &&
         typeof (p as PeakDetail).rt === "number" &&
         typeof (p as PeakDetail).area_pct === "number" &&
-        typeof (p as PeakDetail).name === "string"
+        Number.isFinite((p as PeakDetail).rt) &&
+        Number.isFinite((p as PeakDetail).area_pct) &&
+        (p as PeakDetail).rt > 0 &&
+        (p as PeakDetail).area_pct >= 0 &&
+        typeof (p as PeakDetail).name === "string" &&
+        (p as PeakDetail).name.trim().length > 0
       ) {
         peaks.push({
-          rt: (p as PeakDetail).rt,
-          area_pct: (p as PeakDetail).area_pct,
-          name: (p as PeakDetail).name,
+          rt: Number((p as PeakDetail).rt.toFixed(2)),
+          area_pct: Number((p as PeakDetail).area_pct.toFixed(4)),
+          name: (p as PeakDetail).name.trim(),
         });
       }
     }
+    peaks.sort((a, b) => a.rt - b.rt);
   }
 
   const additionalRaw = d.additional_tests;
@@ -154,6 +187,7 @@ export function parseCertificateDetails(
   return {
     batch: str(d.batch) ?? batchRef,
     batchRef,
+    testingDate: isoDate(d.testing_date),
     instrument: str(d.instrument),
     column: str(d.column),
     method: str(d.method),

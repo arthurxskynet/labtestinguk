@@ -70,7 +70,7 @@ set
     'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
     'method', 'Water / acetonitrile + 0.1% TFA, gradient',
     'detection', 'UV 214 nm',
-    'chromatogram_profile', 'default',
+    'chromatogram_profile', 'blend',
     'notes', 'Research reference material — chain-of-custody retained per lab SOP.',
     'show_product_placeholder', true,
     'placeholder_caption', 'Laboratory archive photograph not attached to this registry entry.',
@@ -170,7 +170,7 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
-      'chromatogram_profile', 'high_purity',
+      'chromatogram_profile', 'blend',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP. Mass recorded as monoisotopic convention for the stated salt form.',
       'show_product_placeholder', true,
       'placeholder_caption', 'Laboratory archive photograph not attached to this registry entry.',
@@ -198,7 +198,7 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
-      'chromatogram_profile', 'blend',
+      'chromatogram_profile', 'default',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP. Line comprises multiple named analytes; see recorded components.',
       'show_product_placeholder', true,
       'placeholder_caption', 'Laboratory archive photograph not attached to this registry entry.',
@@ -214,9 +214,9 @@ values
       ),
       'additional_tests', jsonb_build_array('LC-MS identity (representative)', 'System suitability'),
       'peaks', jsonb_build_array(
-        jsonb_build_object('name', 'Primary envelope', 'rt', 4.18, 'area_pct', 99.22),
-        jsonb_build_object('name', 'Secondary feature', 'rt', 3.05, 'area_pct', 0.42),
-        jsonb_build_object('name', 'Late eluent', 'rt', 6.71, 'area_pct', 0.36)
+        jsonb_build_object('name', 'GHK (reference)', 'rt', 3.76, 'area_pct', 33.07),
+        jsonb_build_object('name', 'BPC-157 (reference)', 'rt', 4.23, 'area_pct', 33.08),
+        jsonb_build_object('name', 'TB-500 fragment (reference)', 'rt', 4.08, 'area_pct', 33.07)
       )
     )
   ),
@@ -236,7 +236,7 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
-      'chromatogram_profile', 'blend',
+      'chromatogram_profile', 'high_purity',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP. Pack sizes supplied under discrete internal SKUs.',
       'show_product_placeholder', true,
       'placeholder_caption', 'Laboratory archive photograph not attached to this registry entry.',
@@ -344,8 +344,45 @@ where
   certificates.user_id is null;
 
 -- ---------------------------------------------------------------------------
+-- Backfill testing date (weekday only, deterministic pseudo-random by code)
+-- Range: 2026-01-18 .. 2026-04-22 (Mon-Fri only)
+-- ---------------------------------------------------------------------------
+
+with weekday_pool as (
+  select
+    d::date as dt,
+    row_number() over (order by d) - 1 as idx
+  from generate_series(date '2026-01-18', date '2026-04-22', interval '1 day') as gs(d)
+  where extract(isodow from d) between 1 and 5
+),
+pool_meta as (
+  select count(*)::int as n
+  from weekday_pool
+),
+targets as (
+  select
+    c.id,
+    (('x' || substr(md5(c.code), 1, 8))::bit(32)::int & 2147483647) as seed
+  from public.certificates c
+)
+update public.certificates c
+set details = jsonb_set(
+  coalesce(c.details, '{}'::jsonb),
+  '{testing_date}',
+  to_jsonb(to_char(w.dt, 'YYYY-MM-DD')),
+  true
+)
+from targets t
+cross join pool_meta m
+join weekday_pool w on w.idx = (t.seed % m.n)
+where c.id = t.id;
+
+-- ---------------------------------------------------------------------------
 -- Expansion pack — twelve catalogue rows (same payloads as seed.sql)
 -- ---------------------------------------------------------------------------
+-- Blend spike contract:
+--   Dominant chromatogram peaks must match recorded component count.
+--   2 components => 2 dominant peaks, 3 components => 3 dominant peaks.
 
 insert into public.certificates (
   code,
@@ -388,9 +425,8 @@ values
       ),
       'additional_tests', jsonb_build_array('LC-MS identity (representative)', 'System suitability'),
       'peaks', jsonb_build_array(
-        jsonb_build_object('name', 'Primary envelope', 'rt', 4.31, 'area_pct', 99.45),
-        jsonb_build_object('name', 'Secondary feature', 'rt', 3.04, 'area_pct', 0.30),
-        jsonb_build_object('name', 'Late eluent', 'rt', 6.52, 'area_pct', 0.25)
+        jsonb_build_object('name', 'CJC-1295 without DAC (reference)', 'rt', 4.31, 'area_pct', 49.73),
+        jsonb_build_object('name', 'Ipamorelin (reference)', 'rt', 4.14, 'area_pct', 49.72)
       )
     )
   ),
@@ -424,9 +460,8 @@ values
       ),
       'additional_tests', jsonb_build_array('LC-MS identity (representative)', 'System suitability'),
       'peaks', jsonb_build_array(
-        jsonb_build_object('name', 'Primary envelope', 'rt', 4.19, 'area_pct', 99.67),
-        jsonb_build_object('name', 'Aggregate shoulder', 'rt', 3.27, 'area_pct', 0.18),
-        jsonb_build_object('name', 'Late eluent', 'rt', 6.08, 'area_pct', 0.15)
+        jsonb_build_object('name', 'BPC-157 (reference)', 'rt', 4.23, 'area_pct', 49.84),
+        jsonb_build_object('name', 'TB-500 fragment (reference)', 'rt', 4.08, 'area_pct', 49.83)
       )
     )
   ),

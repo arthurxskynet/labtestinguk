@@ -11,6 +11,13 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import type { PeakDetail } from "@/lib/certificate-details";
+import {
+  buildSeriesFromPeaks,
+  hasValidPeakStructure,
+  selectRenderablePeaks,
+  type ChromatogramPoint,
+} from "@/lib/chromatogram/peak-model";
 
 const POINTS = 72;
 
@@ -40,16 +47,23 @@ function buildDefaultSeries(seed: number) {
   return data;
 }
 
-/** Composite multi-peak profile for blend / mixed lines. */
-function buildBlendSeries(seed: number) {
+function buildExpectedCountFallbackSeries(seed: number, expectedCount: number) {
+  const count = Math.max(1, expectedCount);
+  if (count === 1) return buildHighPuritySeries(seed);
+
   const data: { rt: number; intensity: number }[] = [];
+  const centers = Array.from({ length: count }, (_, idx) => 16 + idx * (40 / Math.max(1, count - 1)));
+
   for (let i = 0; i < POINTS; i++) {
     const rt = Number((2 + i * 0.12).toFixed(2));
-    const p1 = Math.exp(-Math.pow((i - 18) / 3.6, 2)) * 72;
-    const p2 = Math.exp(-Math.pow((i - 30) / 4.2, 2)) * 88;
-    const p3 = Math.exp(-Math.pow((i - 44) / 4.8, 2)) * 64;
-    const noise = Math.sin(seed + i * 0.33) * 0.9;
-    data.push({ rt, intensity: Math.max(0, p1 + p2 + p3 + noise) });
+    let intensity = 0;
+    for (const [idx, center] of centers.entries()) {
+      const sigma = 2.2 + ((idx + seed) % 3) * 0.4;
+      const amplitude = 72 + ((seed + idx * 11) % 16);
+      intensity += Math.exp(-Math.pow((i - center) / sigma, 2)) * amplitude;
+    }
+    const noise = Math.sin(seed + i * 0.28) * 0.18;
+    data.push({ rt, intensity: Math.max(0, intensity + noise) });
   }
   return data;
 }
@@ -59,7 +73,7 @@ const FILL_TOP = "#14b8a6";
 const FILL_MID = "#10b981";
 const FILL_BOTTOM = "#34d399";
 
-function peakFromData(data: { rt: number; intensity: number }[]): {
+function peakFromData(data: ChromatogramPoint[]): {
   rt: number;
   intensity: number;
 } {
@@ -75,23 +89,42 @@ export function ChromatogramChart({
   peptideName,
   profile = "default",
   variant = "default",
+  peaks = [],
+  isBlend = false,
+  expectedPeakCount,
 }: {
   peptideName: string;
   profile?: "high_purity" | "default" | "blend";
   /** Tighter embed on marketing card: extra axis space, peak marker, softer grid. */
   variant?: "default" | "embed";
+  peaks?: PeakDetail[];
+  isBlend?: boolean;
+  expectedPeakCount?: number;
 }) {
   const uid = React.useId().replace(/:/g, "");
   const gradId = `chromFill-${uid}`;
 
   const seed =
     peptideName.split("").reduce((acc, ch) => acc + ch.charCodeAt(0), 0) % 97;
-  const data =
-    profile === "high_purity"
+  const data = React.useMemo(() => {
+    const renderablePeaks = selectRenderablePeaks(peaks, expectedPeakCount);
+    if (
+      hasValidPeakStructure(renderablePeaks, {
+        isBlend,
+        expectedPeakCount,
+        minRelativePeakShare: isBlend ? 0.12 : undefined,
+      })
+    ) {
+      const series = buildSeriesFromPeaks(renderablePeaks, seed, expectedPeakCount);
+      if (series.length > 0) return series;
+    }
+    if (expectedPeakCount != null && expectedPeakCount > 0) {
+      return buildExpectedCountFallbackSeries(seed, expectedPeakCount);
+    }
+    return profile === "high_purity"
       ? buildHighPuritySeries(seed)
-      : profile === "blend"
-        ? buildBlendSeries(seed)
-        : buildDefaultSeries(seed);
+      : buildDefaultSeries(seed);
+  }, [expectedPeakCount, isBlend, peaks, profile, seed]);
 
   const peak = React.useMemo(() => peakFromData(data), [data]);
   const embed = variant === "embed";

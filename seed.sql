@@ -307,9 +307,9 @@ values
       ),
       'additional_tests', jsonb_build_array('LC-MS identity (representative)', 'System suitability'),
       'peaks', jsonb_build_array(
-        jsonb_build_object('name', 'Primary envelope', 'rt', 4.18, 'area_pct', 99.22),
-        jsonb_build_object('name', 'Secondary feature', 'rt', 3.05, 'area_pct', 0.42),
-        jsonb_build_object('name', 'Late eluent', 'rt', 6.71, 'area_pct', 0.36)
+        jsonb_build_object('name', 'GHK (reference)', 'rt', 3.76, 'area_pct', 33.07),
+        jsonb_build_object('name', 'BPC-157 (reference)', 'rt', 4.23, 'area_pct', 33.08),
+        jsonb_build_object('name', 'TB-500 fragment (reference)', 'rt', 4.08, 'area_pct', 33.07)
       )
     )
   ),
@@ -429,6 +429,9 @@ on conflict (code) do nothing;
 -- ---------------------------------------------------------------------------
 -- Catalogue expansion — twelve reference lines (blends, peptides, materials)
 -- ---------------------------------------------------------------------------
+-- Blend spike contract:
+--   Dominant chromatogram peaks must match recorded component count.
+--   2 components => 2 dominant peaks, 3 components => 3 dominant peaks.
 insert into public.certificates (
   code,
   peptide_name,
@@ -470,9 +473,8 @@ values
       ),
       'additional_tests', jsonb_build_array('LC-MS identity (representative)', 'System suitability'),
       'peaks', jsonb_build_array(
-        jsonb_build_object('name', 'Primary envelope', 'rt', 4.31, 'area_pct', 99.45),
-        jsonb_build_object('name', 'Secondary feature', 'rt', 3.04, 'area_pct', 0.30),
-        jsonb_build_object('name', 'Late eluent', 'rt', 6.52, 'area_pct', 0.25)
+        jsonb_build_object('name', 'CJC-1295 without DAC (reference)', 'rt', 4.31, 'area_pct', 49.73),
+        jsonb_build_object('name', 'Ipamorelin (reference)', 'rt', 4.14, 'area_pct', 49.72)
       )
     )
   ),
@@ -506,9 +508,8 @@ values
       ),
       'additional_tests', jsonb_build_array('LC-MS identity (representative)', 'System suitability'),
       'peaks', jsonb_build_array(
-        jsonb_build_object('name', 'Primary envelope', 'rt', 4.19, 'area_pct', 99.67),
-        jsonb_build_object('name', 'Aggregate shoulder', 'rt', 3.27, 'area_pct', 0.18),
-        jsonb_build_object('name', 'Late eluent', 'rt', 6.08, 'area_pct', 0.15)
+        jsonb_build_object('name', 'BPC-157 (reference)', 'rt', 4.23, 'area_pct', 49.84),
+        jsonb_build_object('name', 'TB-500 fragment (reference)', 'rt', 4.08, 'area_pct', 49.83)
       )
     )
   ),

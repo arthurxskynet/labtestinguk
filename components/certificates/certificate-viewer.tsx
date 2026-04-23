@@ -31,6 +31,11 @@ import {
   parseCertificateDetails,
   sumPeakAreaPercent,
 } from "@/lib/certificate-details";
+import {
+  expectedDominantCount,
+  selectRenderablePeaks,
+  validateDominantCardinality,
+} from "@/lib/chromatogram/peak-model";
 import { loadImageDataUrlForPdf } from "@/lib/certificate-pdf-image";
 import {
   VERIFY_QR_PDF_OPTIONS,
@@ -103,11 +108,41 @@ export function CertificateViewer({
     return "UV trace (normalised). Profile reflects recorded purity class.";
   }, [certificate.peptide_name, detail.componentAnalytes.length]);
 
-  const peakAreaTotal = React.useMemo(
-    () => sumPeakAreaPercent(detail.peaks),
-    [detail.peaks],
-  );
   const mixCertificate = React.useMemo(() => isMixCertificate(detail), [detail]);
+  const expectedPeakCount = React.useMemo(() => {
+    return expectedDominantCount({
+      isBlend: mixCertificate,
+      componentPurityCount: detail.componentPurity.length,
+      componentAnalytesCount: detail.componentAnalytes.length,
+      fallbackPeakCount: detail.peaks.length,
+    });
+  }, [
+    detail.componentAnalytes.length,
+    detail.componentPurity.length,
+    detail.peaks.length,
+    mixCertificate,
+  ]);
+  const displayPeaks = React.useMemo(
+    () => selectRenderablePeaks(detail.peaks, expectedPeakCount),
+    [detail.peaks, expectedPeakCount],
+  );
+  const peakAreaTotal = React.useMemo(
+    () => sumPeakAreaPercent(displayPeaks),
+    [displayPeaks],
+  );
+  const strictPeakContractSatisfied = React.useMemo(
+    () => validateDominantCardinality(displayPeaks, expectedPeakCount),
+    [displayPeaks, expectedPeakCount],
+  );
+  const testingDateDisplay = React.useMemo(() => {
+    if (!detail.testingDate) return null;
+    const parsed = new Date(`${detail.testingDate}T00:00:00Z`);
+    if (Number.isNaN(parsed.getTime())) return detail.testingDate;
+    return parsed.toLocaleDateString("en-GB", {
+      dateStyle: "medium",
+      timeZone: "UTC",
+    });
+  }, [detail.testingDate]);
 
   /** Same URL string used for on-screen QR and PDF (single source of truth). */
   const verifyPageUrl = React.useMemo(
@@ -224,6 +259,7 @@ export function CertificateViewer({
         ["Column", detail.column ?? "—"],
         ["Method", detail.method ?? "—"],
         ["Detection", detail.detection ?? "—"],
+        ["Testing date", testingDateDisplay ?? "—"],
         [
           "Issued",
           new Date(certificate.created_at).toLocaleString("en-GB", {
@@ -389,7 +425,7 @@ export function CertificateViewer({
         }
       }
 
-      if (detail.peaks.length > 0) {
+      if (displayPeaks.length > 0) {
         y += 4;
         if (y > 230) {
           doc.addPage();
@@ -406,8 +442,8 @@ export function CertificateViewer({
         doc.text("Area %", margin + 110, y);
         y += 5;
         doc.setTextColor(15, 23, 42);
-        const totalPct = sumPeakAreaPercent(detail.peaks);
-        for (const p of detail.peaks) {
+        const totalPct = sumPeakAreaPercent(displayPeaks);
+        for (const p of displayPeaks) {
           if (y > 285) {
             doc.addPage();
             y = 18;
@@ -703,6 +739,12 @@ export function CertificateViewer({
                     {detail.detection ?? "—"}
                   </TableCell>
                 </TableRow>
+                <TableRow>
+                  <TableCell className="text-slate-500">Testing date</TableCell>
+                  <TableCell className="text-right text-sm">
+                    {testingDateDisplay ?? "—"}
+                  </TableCell>
+                </TableRow>
                 {showDetailLabNotes ? (
                   <TableRow>
                     <TableCell className="text-slate-500">
@@ -748,12 +790,18 @@ export function CertificateViewer({
         <Card className="min-w-0 rounded-2xl border-slate-200/90 shadow-sm lg:col-span-3">
           <CardHeader>
             <CardTitle className="text-lg">Representative chromatogram</CardTitle>
-            <CardDescription>{chromatogramDescription}</CardDescription>
+            <CardDescription>
+              {chromatogramDescription}
+              {!strictPeakContractSatisfied ? " Spike data normalized for strict compound-count display." : ""}
+            </CardDescription>
           </CardHeader>
           <CardContent className="h-[280px] w-full min-h-[220px] pt-2">
             <ChromatogramChart
               peptideName={certificate.peptide_name}
               profile={detail.chromatogramProfile}
+              peaks={displayPeaks}
+              isBlend={mixCertificate}
+              expectedPeakCount={expectedPeakCount}
             />
           </CardContent>
         </Card>
@@ -880,7 +928,7 @@ export function CertificateViewer({
         </Card>
       ) : null}
 
-      {detail.peaks.length > 0 ? (
+      {displayPeaks.length > 0 ? (
         <Card className="mt-6 rounded-2xl border-slate-200/90 shadow-sm">
           <CardHeader>
             <CardTitle className="text-lg">Peak table</CardTitle>
@@ -899,7 +947,7 @@ export function CertificateViewer({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {detail.peaks.map((p) => (
+                {displayPeaks.map((p) => (
                   <TableRow key={`${p.name}-${p.rt}`}>
                     <TableCell>{p.name}</TableCell>
                     <TableCell className="text-right font-mono text-sm tabular-nums">

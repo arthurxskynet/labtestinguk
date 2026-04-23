@@ -8,24 +8,29 @@ import {
   computeBlendSummaryPurity,
   sanitizePurityToRange,
 } from "@/lib/certificate-details";
+import { normalizeBlendPeaksFromComponents } from "@/lib/chromatogram/peak-model";
 import { labTestSchema } from "@/lib/validations/lab-test";
 
 export type CreateCertificateResult =
   | { ok: true; code: string }
   | { ok: false; error: string };
 
-function buildSyntheticPeaks(seed: string) {
+function buildSyntheticPeaks(
+  seed: string,
+  peptideName: string,
+  isBlend: boolean,
+  components: Array<{ analyte: string; purity_percent: number; rt: number | null }>,
+) {
+  if (isBlend) {
+    const blendPeaks = normalizeBlendPeaksFromComponents(components);
+    if (blendPeaks.length > 0) return blendPeaks;
+  }
   const base = seed.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
   return [
     {
-      rt: Number((2.1 + (base % 10) * 0.01).toFixed(2)),
-      area_pct: 99.11 + (base % 7) / 10,
-      name: "Main",
-    },
-    {
-      rt: Number((4.2 + (base % 5) * 0.02).toFixed(2)),
-      area_pct: 0.4 + (base % 5) / 10,
-      name: "System",
+      rt: Number((4.1 + (base % 8) * 0.03).toFixed(2)),
+      area_pct: sanitizePurityToRange(99.11 + (base % 7) / 10),
+      name: peptideName,
     },
   ];
 }
@@ -54,7 +59,6 @@ export async function createLabCertificate(
     return { ok: false, error: "You must be signed in." };
   }
 
-  const peaks = buildSyntheticPeaks(v.peptide_name + v.batch_reference);
   const componentPurity = (v.component_purity ?? []).map((entry) => ({
     analyte: entry.analyte.trim(),
     purity_percent: sanitizePurityToRange(entry.purity_percent),
@@ -62,6 +66,12 @@ export async function createLabCertificate(
     notes: entry.notes?.trim() ? entry.notes.trim() : null,
   }));
   const isBlend = v.is_blend;
+  const peaks = buildSyntheticPeaks(
+    v.peptide_name + v.batch_reference,
+    v.peptide_name,
+    isBlend,
+    componentPurity,
+  );
   const resolvedPurity =
     isBlend && componentPurity.length > 0
       ? computeBlendSummaryPurity(componentPurity) ?? null
