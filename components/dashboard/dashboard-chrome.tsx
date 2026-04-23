@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Menu } from "lucide-react";
 
+import { SiteLogo } from "@/components/branding/site-logo";
 import {
   DashboardNavBranding,
   DashboardNavLinks,
@@ -31,7 +32,7 @@ export function DashboardChrome({ children }: { children: React.ReactNode }) {
         >
           <Menu className="size-5" aria-hidden />
         </button>
-        <span className="text-sm font-semibold text-foreground">Lab Portal</span>
+        <SiteLogo size="sm" className="w-28" imageClassName="block" />
       </header>
 
       <Dialog open={mobileOpen} onOpenChange={setMobileOpen}>

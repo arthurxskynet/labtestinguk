@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Menu } from "lucide-react";
 
+import { SiteLogo } from "@/components/branding/site-logo";
 import {
   AdminNavBranding,
   AdminNavLinks,
@@ -31,7 +32,7 @@ export function AdminChrome({ children }: { children: React.ReactNode }) {
         >
           <Menu className="size-5" aria-hidden />
         </button>
-        <span className="text-sm font-semibold text-foreground">Admin</span>
+        <SiteLogo size="sm" className="w-28" imageClassName="block" />
       </header>
 
       <Dialog open={mobileOpen} onOpenChange={setMobileOpen}>

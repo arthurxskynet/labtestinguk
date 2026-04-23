@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { FlaskConical, LayoutDashboard, Settings } from "lucide-react";
 
 import { signOut } from "@/lib/actions/auth";
+import { SiteLogo } from "@/components/branding/site-logo";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
 
@@ -20,7 +21,7 @@ export function DashboardNavBranding() {
       <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
         Lab Portal
       </p>
-      <p className="mt-1 text-sm font-semibold text-foreground">Verifypeps</p>
+      <SiteLogo size="sm" className="mt-2 w-36" imageClassName="block" />
     </div>
   );
 }

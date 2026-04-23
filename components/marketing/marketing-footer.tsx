@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { SiteLogo } from "@/components/branding/site-logo";
+
 const platform = [
   { href: "/#how-it-works", label: "How It Works" },
   { href: "/endotoxin-testing", label: "Endotoxin Testing" },
@@ -27,7 +29,7 @@ export function MarketingFooter() {
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div className="space-y-3">
-            <h3 className="text-lg font-semibold text-foreground">Verifypeps</h3>
+            <SiteLogo size="sm" className="w-40" imageClassName="block" />
             <p className="text-sm leading-relaxed text-muted-foreground">
               Independent peptide verification and testing service.
             </p>

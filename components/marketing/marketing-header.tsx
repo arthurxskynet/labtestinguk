@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
+import { SiteLogo } from "@/components/branding/site-logo";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
 
@@ -57,22 +58,17 @@ export function MarketingHeader() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <Link
           href="/"
-          className="flex items-center gap-2 rounded-lg font-semibold tracking-tight transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/80"
+          className="flex items-center rounded-lg transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/80"
           onClick={() => setOpen(false)}
         >
-          <span className="flex size-9 items-center justify-center rounded-xl bg-white/15 text-white shadow-sm ring-1 ring-white/20">
-            <svg
-              className="size-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              aria-hidden
-            >
-              <path d="M20 6 9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+          <span className="rounded-xl bg-white/95 px-2 py-1 shadow-sm ring-1 ring-slate-100">
+            <SiteLogo
+              size="sm"
+              priority
+              className="w-28 sm:w-32"
+              imageClassName="block"
+            />
           </span>
-          <span className="text-lg">Verifypeps</span>
         </Link>
 
         <nav

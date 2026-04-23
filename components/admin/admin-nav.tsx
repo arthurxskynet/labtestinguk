@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { LayoutDashboard, ScrollText, Shield } from "lucide-react";
 
 import { signOut } from "@/lib/actions/auth";
+import { SiteLogo } from "@/components/branding/site-logo";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
 
@@ -20,7 +21,7 @@ export function AdminNavBranding() {
         <Shield className="size-3.5 text-accent-sky-600" aria-hidden />
         Admin
       </p>
-      <p className="mt-1 text-sm font-semibold text-foreground">Verifypeps</p>
+      <SiteLogo size="sm" className="mt-2 w-36" imageClassName="block" />
       <p className="mt-1 text-xs text-muted-foreground">
         Lab data overview — research use only.
       </p>

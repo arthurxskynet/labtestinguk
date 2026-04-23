@@ -24,6 +24,11 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://verifypeps.com"),
+  icons: {
+    icon: [{ url: "/brand/favicon-square.png", type: "image/png" }],
+    shortcut: ["/brand/favicon-square.png"],
+    apple: [{ url: "/brand/favicon-square.png" }],
+  },
   title: {
     default:
       "Peptide Verification & Testing UK | HPLC & LC-MS Certificates | Verifypeps",
