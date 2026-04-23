@@ -38,7 +38,7 @@ export function CertificatesTable({
 
   return (
     <>
-      <div className="min-w-0 overflow-x-auto rounded-2xl border border-slate-200/90 bg-white shadow-md [-webkit-overflow-scrolling:touch]">
+      <div className="min-w-0 overflow-x-auto rounded-2xl border border-border bg-card shadow-md [-webkit-overflow-scrolling:touch]">
         <Table className="min-w-[36rem] w-full">
           <TableHeader>
             <TableRow>
@@ -52,11 +52,11 @@ export function CertificatesTable({
           <TableBody>
             {certificates.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="py-12 text-center text-slate-500">
+                <TableCell colSpan={5} className="py-12 text-center text-muted-foreground">
                   No certificates yet.{" "}
                   <Link
                     href="/dashboard/new"
-                        className="font-medium text-brand-600 underline-offset-2 hover:underline"
+                        className="font-medium text-[var(--accent-primary)] underline-offset-2 hover:underline"
                   >
                     Add a new lab test
                   </Link>
@@ -71,7 +71,7 @@ export function CertificatesTable({
                   <TableCell className="text-right">
                     {c.purity_percent != null ? `${c.purity_percent}%` : "—"}
                   </TableCell>
-                  <TableCell className="text-sm text-slate-600">
+                  <TableCell className="text-sm text-muted-foreground">
                     {new Date(c.created_at).toLocaleDateString("en-GB")}
                   </TableCell>
                   <TableCell className="text-right">

@@ -17,8 +17,8 @@ const items = [
 
 export function DashboardNavBranding() {
   return (
-    <div className="border-b border-slate-100 px-4 py-4">
-      <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+    <div className="border-b border-[var(--bg-border)] px-4 py-4">
+      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
         Lab Portal
       </p>
       <SiteLogo size="sm" className="mt-2 w-36" imageClassName="block" />
@@ -49,7 +49,7 @@ export function DashboardNavLinks({
               buttonVariants({ variant: "ghost", size: "sm" }),
               "min-h-10 justify-start gap-2 rounded-xl text-muted-foreground",
               active &&
-                "bg-brand-50 font-medium text-brand-700 hover:bg-brand-50",
+                "bg-[var(--accent-subtle)] font-medium text-[var(--accent-primary)] hover:bg-[var(--accent-subtle)]",
             )}
           >
             <item.icon className="size-4 shrink-0" aria-hidden />
@@ -63,13 +63,13 @@ export function DashboardNavLinks({
 
 export function DashboardSignOut({ className }: { className?: string }) {
   return (
-    <div className={cn("border-t border-slate-100 p-3", className)}>
+    <div className={cn("border-t border-[var(--bg-border)] p-3", className)}>
       <form action={signOut}>
         <button
           type="submit"
           className={cn(
             buttonVariants({ variant: "outline", size: "sm" }),
-            "min-h-10 w-full rounded-xl border-slate-200 text-muted-foreground",
+            "min-h-10 w-full rounded-xl border-[var(--bg-border)] text-muted-foreground hover:bg-[var(--bg-elevated)]",
           )}
         >
           Sign out

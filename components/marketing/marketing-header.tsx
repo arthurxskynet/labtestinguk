@@ -2,157 +2,220 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 
 import { SiteLogo } from "@/components/branding/site-logo";
-import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
 
 const nav = [
   { href: "/", label: "Home" },
   { href: "/#how-it-works", label: "How It Works" },
   { href: "/verify", label: "Verify" },
-  { href: "/#blog", label: "Blog" },
   { href: "/endotoxin-testing", label: "Endotoxin Testing" },
   { href: "/help", label: "Help" },
 ] as const;
 
-const SCROLL_THRESHOLD_PX = 12;
+const SCROLL_THRESHOLD_PX = 16;
 
-const navLinkClass =
-  "rounded-lg px-3 py-2 text-sm font-medium text-white/90 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/80";
+function isActivePath(pathname: string, href: string): boolean {
+  if (href === "/") return pathname === "/";
+  if (href.startsWith("/#")) return false;
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
 
 export function MarketingHeader() {
+  const pathname = usePathname();
   const [open, setOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = React.useState(false);
+  const overlayRef = React.useRef<HTMLDivElement>(null);
+  const firstFocusableRef = React.useRef<HTMLAnchorElement>(null);
+  const closeButtonRef = React.useRef<HTMLButtonElement>(null);
 
   React.useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setPrefersReducedMotion(mq.matches);
-    const onChange = () => setPrefersReducedMotion(mq.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
-
-  React.useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > SCROLL_THRESHOLD_PX);
-    };
+    const onScroll = () => setScrolled(window.scrollY > SCROLL_THRESHOLD_PX);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  React.useEffect(() => {
+    if (!open) return;
+    document.body.style.overflow = "hidden";
+    const t = window.setTimeout(() => firstFocusableRef.current?.focus(), 0);
+    return () => {
+      window.clearTimeout(t);
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  React.useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setOpen(false);
+        closeButtonRef.current?.focus();
+      }
+      if (e.key !== "Tab" || !overlayRef.current) return;
+      const focusable = overlayRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])',
+      );
+      const list = [...focusable].filter((el) => !el.hasAttribute("data-skip-focus-trap"));
+      if (list.length === 0) return;
+      const first = list[0]!;
+      const last = list[list.length - 1]!;
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [open]);
+
   return (
-    <header
-      className={cn(
-        "fixed inset-x-0 top-0 z-50 border-b text-white",
-        scrolled
-          ? "border-white/20 bg-brand-600/85 shadow-lg backdrop-blur-md supports-[backdrop-filter]:bg-brand-600/75"
-          : "border-brand-700/30 bg-brand-600 shadow-md",
-        !prefersReducedMotion &&
-          "transition-[background-color,box-shadow,backdrop-filter,border-color] duration-300 ease-out",
-      )}
-    >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <Link
-          href="/"
-          className="flex items-center rounded-lg transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/80"
-          onClick={() => setOpen(false)}
+    <>
+      <header
+        className={cn(
+          "fixed inset-x-0 top-0 z-50 border-b border-slate-200/90 bg-white/95 shadow-sm backdrop-blur-md transition-[padding,box-shadow] duration-300 ease-out supports-[backdrop-filter]:bg-white/90",
+          scrolled && "shadow-md",
+          scrolled ? "py-2" : "py-3",
+        )}
+      >
+        <div
+          className={cn(
+            "mx-auto flex max-w-[1200px] items-center justify-between gap-4 px-4 transition-all duration-300 ease-out sm:px-6 lg:px-8",
+            scrolled &&
+              "max-w-[min(960px,92vw)] rounded-full border border-slate-200/90 bg-white py-2 shadow-md",
+          )}
         >
-          <span className="rounded-xl bg-white/95 px-2 py-1 shadow-sm ring-1 ring-slate-100">
-            <SiteLogo
-              size="sm"
-              priority
-              className="w-28 sm:w-32"
-              imageClassName="block"
+          <Link
+            href="/"
+            className="group relative flex shrink-0 items-center rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-primary)]"
+            onClick={() => setOpen(false)}
+          >
+            <span className="rounded-lg px-1 py-0.5 ring-1 ring-transparent transition-[box-shadow] group-hover:ring-slate-200/80">
+              <SiteLogo
+                size="sm"
+                priority
+                className="w-28 sm:w-32"
+                imageClassName="block"
+              />
+            </span>
+            <span
+              className="absolute -bottom-0.5 left-1 right-1 h-0.5 scale-x-0 rounded-full bg-[var(--accent-primary)] transition-transform duration-200 group-hover:scale-x-100"
+              aria-hidden
             />
-          </span>
-        </Link>
+          </Link>
 
-        <nav
-          className="hidden items-center gap-0.5 lg:flex"
-          aria-label="Primary navigation"
-        >
-          {nav.map((item) => (
-            <Link key={item.href} href={item.href} className={navLinkClass}>
-              {item.label}
+          <nav
+            className="hidden items-center gap-1 lg:flex"
+            aria-label="Primary navigation"
+          >
+            {nav.map((item) => {
+              const active = isActivePath(pathname, item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "relative rounded-lg px-3 py-2 text-[14px] font-medium transition-colors duration-200",
+                    active
+                      ? "text-[#0f172a]"
+                      : "text-slate-600 hover:text-[var(--accent-primary)]",
+                  )}
+                >
+                  {item.label}
+                  {active ? (
+                    <span
+                      className="absolute bottom-0 left-1/2 size-1 -translate-x-1/2 rounded-full bg-[var(--accent-primary)]"
+                      aria-hidden
+                    />
+                  ) : null}
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className="flex items-center gap-2">
+            <Link
+              href="/verify"
+              className={cn(
+                "hidden items-center justify-center rounded-[var(--radius-pill)] border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-[#0f172a] transition-colors duration-200 hover:border-[var(--accent-primary)] hover:text-[var(--accent-primary)] sm:inline-flex",
+              )}
+            >
+              Verify Certificate
             </Link>
-          ))}
-        </nav>
-
-        <div className="flex items-center gap-2">
-          <Link
-            href="/login"
-            className={cn(
-              buttonVariants({ variant: "secondary", size: "sm" }),
-              "hidden border-0 bg-white text-brand-700 shadow-sm hover:bg-brand-50 sm:inline-flex",
-            )}
-          >
-            Sign In
-          </Link>
-          <Link
-            href="/dashboard"
-            className={cn(
-              buttonVariants({ variant: "outline", size: "sm" }),
-              "hidden border-white/40 bg-white/10 text-white hover:bg-white/20 sm:inline-flex",
-            )}
-          >
-            Dashboard
-          </Link>
-          <button
-            type="button"
-            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-white transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/80 lg:hidden"
-            aria-expanded={open}
-            aria-controls="mobile-nav"
-            onClick={() => setOpen((v) => !v)}
-          >
-            {open ? <X className="size-5" aria-hidden /> : <Menu className="size-5" aria-hidden />}
-            <span className="sr-only">Open navigation menu</span>
-          </button>
+            <Link
+              href="/login"
+              className="btn-primary-motion hidden items-center justify-center rounded-[var(--radius-pill)] bg-[var(--accent-primary)] px-4 py-2 text-sm font-semibold text-[var(--text-inverse)] hover:bg-[var(--accent-hover)] sm:inline-flex"
+            >
+              Lab Portal
+            </Link>
+            <button
+              ref={closeButtonRef}
+              type="button"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg text-[#0f172a] transition-colors hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-primary)] lg:hidden"
+              aria-expanded={open}
+              aria-controls="mobile-nav-overlay"
+              onClick={() => setOpen((v) => !v)}
+            >
+              {open ? <X className="size-5" aria-hidden /> : <Menu className="size-5" aria-hidden />}
+              <span className="sr-only">{open ? "Close navigation menu" : "Open navigation menu"}</span>
+            </button>
+          </div>
         </div>
-      </div>
+      </header>
 
       {open ? (
         <div
-          id="mobile-nav"
-          className="border-t border-white/15 bg-brand-700 px-4 py-4 lg:hidden"
+          ref={overlayRef}
+          id="mobile-nav-overlay"
+          className="fixed inset-0 z-40 flex flex-col bg-white px-6 pb-10 pt-24 lg:hidden"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile navigation"
         >
-          <nav className="flex flex-col gap-1" aria-label="Mobile primary">
-            {nav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="rounded-lg px-3 py-2.5 text-sm font-medium text-white/95 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/80"
-                onClick={() => setOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
+          <nav className="flex flex-col gap-2" aria-label="Mobile primary">
+            {nav.map((item, i) => {
+              const active = isActivePath(pathname, item.href);
+              return (
+                <Link
+                  key={item.href}
+                  ref={i === 0 ? firstFocusableRef : undefined}
+                  href={item.href}
+                  style={{ animationDelay: `${i * 40}ms` }}
+                  className={cn(
+                    "animate-fade-in rounded-xl px-4 py-3 text-lg font-medium",
+                    active ? "text-[#0f172a]" : "text-slate-600",
+                  )}
+                  onClick={() => setOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
             <Link
-              href="/login"
-              className={cn(
-                buttonVariants({ variant: "secondary" }),
-                "mt-2 bg-white text-brand-700 hover:bg-brand-50",
-              )}
+              href="/verify"
+              className="animate-fade-in mt-4 rounded-[var(--radius-pill)] border border-slate-200 px-4 py-3 text-center text-base font-semibold text-[#0f172a]"
               onClick={() => setOpen(false)}
             >
-              Sign In
+              Verify Certificate
             </Link>
             <Link
-              href="/dashboard"
-              className={cn(
-                buttonVariants({ variant: "outline" }),
-                "border-white/40 bg-white/10 text-white hover:bg-white/20",
-              )}
+              href="/login"
+              className="btn-primary-motion animate-fade-in rounded-[var(--radius-pill)] bg-[var(--accent-primary)] px-4 py-3 text-center text-base font-semibold text-[var(--text-inverse)] hover:bg-[var(--accent-hover)]"
               onClick={() => setOpen(false)}
             >
-              Dashboard
+              Lab Portal
             </Link>
           </nav>
         </div>
       ) : null}
-    </header>
+    </>
   );
 }

@@ -12,6 +12,9 @@ type Props = {
   defaultValue?: string;
 };
 
+const inputDark =
+  "h-12 min-w-0 flex-1 border-[var(--bg-border)] bg-[var(--bg-surface)] font-mono text-base tracking-wide text-[var(--text-primary)] placeholder:text-[var(--text-muted)] shadow-inner transition-[border-color,box-shadow] duration-200 focus-visible:border-[var(--accent-primary)] focus-visible:ring-[3px] focus-visible:ring-[var(--accent-glow)] sm:min-w-[280px] sm:text-sm";
+
 export function CertificateCodeForm({
   className,
   inputClassName,
@@ -34,14 +37,11 @@ export function CertificateCodeForm({
         placeholder={placeholder}
         defaultValue={defaultValue}
         autoComplete="off"
-        className={cn(
-          "h-12 min-w-0 flex-1 border-slate-200 bg-white font-mono text-base tracking-wide shadow-inner sm:min-w-[280px] sm:text-sm",
-          inputClassName,
-        )}
+        className={cn(inputDark, inputClassName)}
       />
       <Button
         type="submit"
-        className="h-12 shrink-0 bg-primary px-8 text-primary-foreground shadow-md transition-all hover:bg-brand-500 hover:shadow-lg"
+        className="btn-primary-motion h-12 shrink-0 rounded-[var(--radius-md)] bg-[var(--accent-primary)] px-8 font-semibold text-[var(--text-inverse)] shadow-md transition-colors hover:bg-[var(--accent-hover)]"
       >
         {submitLabel}
       </Button>

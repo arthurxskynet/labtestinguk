@@ -20,7 +20,7 @@ export default function NewLabTestPage() {
           selected).
         </p>
         <AmpoulabsNote className="mt-4" />
-        <div className="mt-8 rounded-2xl border border-slate-200/90 bg-white p-6 shadow-md lg:p-8">
+        <div className="mt-8 rounded-2xl border border-border bg-[var(--bg-elevated)] p-6 shadow-[var(--shadow-card)] lg:p-8">
           <NewTestForm />
         </div>
       </div>

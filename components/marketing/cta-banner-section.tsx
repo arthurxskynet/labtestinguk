@@ -1,35 +1,26 @@
 import Link from "next/link";
 
-import { buttonVariants } from "@/components/ui/button-variants";
-import { cn } from "@/lib/utils";
-
 export function CtaBannerSection() {
   return (
-    <section className="lab-gradient-cta border-b border-brand-700/20 py-16 text-white shadow-inner">
-      <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          Ready to Verify?
+    <section className="relative overflow-hidden border-b border-[var(--bg-border)] py-16">
+      <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent-primary)]/90 via-[#008f84] to-[var(--accent-blue)]/90" aria-hidden />
+      <div className="relative marketing-container text-center text-[var(--text-inverse)]">
+        <h2 className="font-display text-[clamp(1.75rem,4vw,2.75rem)] tracking-tight">
+          Ready to verify?
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-white/90">
-          Join UK researchers using Verifypeps for trusted third-party testing
-          and verification.
+          Join UK researchers using Verifypeps for independent testing documentation and certificate verification.
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link
             href="/login"
-            className={cn(
-              buttonVariants({ size: "lg" }),
-              "h-12 min-w-[200px] border-0 bg-white text-brand-700 shadow-lg hover:bg-brand-50",
-            )}
+            className="btn-primary-motion inline-flex h-12 min-w-[200px] items-center justify-center rounded-[var(--radius-pill)] bg-white px-8 text-base font-semibold text-[#080D14] shadow-lg hover:bg-[var(--text-primary)] hover:text-[var(--text-inverse)]"
           >
             Open Lab Portal
           </Link>
           <Link
             href="/#contact"
-            className={cn(
-              buttonVariants({ variant: "outline", size: "lg" }),
-              "h-12 min-w-[200px] border-white/50 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20",
-            )}
+            className="inline-flex h-12 min-w-[200px] items-center justify-center rounded-[var(--radius-pill)] border border-white/50 bg-white/10 px-8 text-base font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/20"
           >
             Contact Us
           </Link>

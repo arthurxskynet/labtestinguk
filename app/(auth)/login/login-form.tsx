@@ -135,7 +135,7 @@ export function LoginForm() {
           href="/"
           className={cn(
             buttonVariants({ variant: "outline" }),
-            "w-full border-slate-200",
+            "w-full border-border",
           )}
         >
           Back to home

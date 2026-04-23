@@ -24,7 +24,8 @@ type Parsed =
   | { kind: "percent"; end: number };
 
 function parseStat(stat: string): Parsed {
-  if (stat === "UK lab") return { kind: "static" };
+  const lower = stat.toLowerCase();
+  if (lower.includes("lab") || lower.includes("uk")) return { kind: "static" };
   const plus = stat.match(/^([\d,]+)\+$/);
   if (plus) {
     return {
@@ -61,13 +62,22 @@ function finalDisplay(parsed: Parsed, stat: string): string {
   return `${parsed.end.toFixed(1)}%`;
 }
 
-type StatTileAnimatedProps = {
-  icon: LucideIcon;
+export type StatTileAnimatedProps = {
+  icon?: LucideIcon;
   stat: string;
   label: string;
+  /** Stats strip (marketing homepage) — emoji + serif value */
+  variant?: "card" | "bar";
+  emoji?: string;
 };
 
-export function StatTileAnimated({ icon: Icon, stat, label }: StatTileAnimatedProps) {
+export function StatTileAnimated({
+  icon: Icon,
+  stat,
+  label,
+  variant = "card",
+  emoji,
+}: StatTileAnimatedProps) {
   const ref = React.useRef<HTMLDivElement>(null);
   const parsed = React.useMemo(() => parseStat(stat), [stat]);
   const prefersReducedMotion = React.useSyncExternalStore(
@@ -137,17 +147,42 @@ export function StatTileAnimated({ icon: Icon, stat, label }: StatTileAnimatedPr
     };
   }, [parsed, prefersReducedMotion, stat]);
 
+  if (variant === "bar") {
+    return (
+      <div
+        ref={ref}
+        className="flex flex-col items-center justify-center px-4 py-10 text-center sm:py-12 lg:py-14"
+      >
+        {emoji ? (
+          <span className="mb-3 text-2xl leading-none" aria-hidden>
+            {emoji}
+          </span>
+        ) : null}
+        <p className="font-display text-[2.5rem] leading-none tracking-tight text-[var(--text-primary)] tabular-nums">
+          {display || stat}
+        </p>
+        <p className="mt-3 max-w-[12rem] text-[13px] font-medium uppercase tracking-[0.08em] text-[var(--text-muted)]">
+          {label}
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div
       ref={ref}
-      className="flex gap-4 rounded-xl border border-accent-sky-200/80 bg-slate-50/50 p-5 ring-1 ring-accent-sky-100/60"
+      className="flex gap-4 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface)] p-5 shadow-[var(--shadow-card)]"
     >
-      <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-600 to-brand-500 text-white shadow-sm">
-        <Icon className="size-6" aria-hidden />
-      </span>
+      {Icon ? (
+        <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-[var(--accent-primary)] text-[var(--text-inverse)] shadow-sm">
+          <Icon className="size-6" aria-hidden />
+        </span>
+      ) : null}
       <div>
-        <p className="text-2xl font-bold text-slate-900 tabular-nums">{display}</p>
-        <p className="text-sm text-slate-600">{label}</p>
+        <p className="text-2xl font-bold tabular-nums text-[var(--text-primary)]">
+          {display || stat}
+        </p>
+        <p className="text-sm text-[var(--text-secondary)]">{label}</p>
       </div>
     </div>
   );

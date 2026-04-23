@@ -515,13 +515,13 @@ export function CertificateViewer({
     <div className={cn(containerClass, "animate-fade-in")}>
       <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between sm:gap-8">
         <div className="min-w-0 flex-1 text-center sm:text-left">
-          <p className="text-sm font-medium text-brand-700">
+          <p className="text-sm font-medium text-[var(--accent-primary)]">
             Certificate located
           </p>
           <h1 className="mt-1 text-3xl font-semibold tracking-tight text-foreground">
             {certificate.peptide_name}
           </h1>
-          <p className="mt-2 font-mono text-sm text-slate-600">
+          <p className="mt-2 font-mono text-sm text-muted-foreground">
             {certificate.code}
           </p>
         </div>
@@ -546,7 +546,7 @@ export function CertificateViewer({
           </div>
           <div className="flex max-w-md flex-col items-center gap-3 sm:flex-row sm:items-start sm:gap-4">
             <div
-              className="relative size-[7.25rem] shrink-0 overflow-hidden rounded-2xl border border-accent-sky-200/80 bg-white shadow-md ring-1 ring-slate-100/90"
+              className="relative size-[7.25rem] shrink-0 overflow-hidden rounded-2xl border border-[var(--bg-border)] bg-card shadow-md ring-1 ring-border"
               aria-busy={!qrDataUrl}
             >
               {qrDataUrl ? (
@@ -561,12 +561,12 @@ export function CertificateViewer({
                 />
               ) : (
                 <div
-                  className="flex h-full min-h-[7.25rem] w-full animate-pulse items-center justify-center rounded-xl bg-gradient-to-br from-slate-50 to-slate-100"
+                  className="flex h-full min-h-[7.25rem] w-full animate-pulse items-center justify-center rounded-xl bg-muted"
                   aria-hidden
                 />
               )}
             </div>
-            <p className="max-w-[14rem] text-center text-xs leading-relaxed text-slate-600 sm:text-left">
+            <p className="max-w-[14rem] text-center text-xs leading-relaxed text-muted-foreground sm:text-left">
               Scan to open the live verification page for this certificate.
             </p>
           </div>
@@ -575,7 +575,7 @@ export function CertificateViewer({
             variant="outline"
             onClick={() => void downloadPdf()}
             disabled={pdfLoading}
-            className="border-slate-200"
+            className="border-border"
           >
             {pdfLoading ? "Preparing PDF…" : "Download PDF"}
           </Button>
@@ -596,58 +596,58 @@ export function CertificateViewer({
       </Card>
 
       <div
-        className="mt-6 hidden min-w-0 gap-3 rounded-2xl border border-slate-200/90 bg-gradient-to-b from-slate-50/90 to-white p-4 shadow-sm lg:grid lg:grid-cols-4"
+        className="mt-6 hidden min-w-0 gap-3 rounded-2xl border border-border bg-[var(--bg-elevated)] p-4 shadow-sm lg:grid lg:grid-cols-4"
         aria-label="Registry summary"
       >
-        <div className="min-w-0 rounded-xl border border-slate-100 bg-white/90 px-3 py-2.5 text-center shadow-sm">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+        <div className="min-w-0 rounded-xl border border-border bg-card px-3 py-2.5 text-center shadow-sm">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
             {mixCertificate ? "Blend summary %" : "HPLC area %"}
           </p>
-          <p className="mt-1 tabular-nums text-lg font-semibold text-slate-900">
+          <p className="mt-1 tabular-nums text-lg font-semibold text-foreground">
             {certificate.purity_percent != null
               ? `${Number(certificate.purity_percent).toFixed(2)}%`
               : "—"}
           </p>
         </div>
-        <div className="min-w-0 rounded-xl border border-slate-100 bg-white/90 px-3 py-2.5 text-center shadow-sm">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+        <div className="min-w-0 rounded-xl border border-border bg-card px-3 py-2.5 text-center shadow-sm">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
             LC-MS (ppm)
           </p>
-          <p className="mt-1 tabular-nums text-lg font-semibold text-slate-900">
+          <p className="mt-1 tabular-nums text-lg font-semibold text-foreground">
             {certificate.lcms_ppm != null ? String(certificate.lcms_ppm) : "—"}
           </p>
         </div>
-        <div className="min-w-0 rounded-xl border border-slate-100 bg-white/90 px-3 py-2.5 text-center shadow-sm">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+        <div className="min-w-0 rounded-xl border border-border bg-card px-3 py-2.5 text-center shadow-sm">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
             Batch / reference
           </p>
-          <p className="mt-1 truncate font-mono text-sm font-semibold text-slate-900 tabular-nums">
+          <p className="mt-1 truncate font-mono text-sm font-semibold text-foreground tabular-nums">
             {detail.batchRef ?? detail.batch ?? "—"}
           </p>
         </div>
-        <div className="min-w-0 rounded-xl border border-slate-100 bg-white/90 px-3 py-2.5 text-center shadow-sm">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+        <div className="min-w-0 rounded-xl border border-border bg-card px-3 py-2.5 text-center shadow-sm">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
             Registry ID
           </p>
-          <p className="mt-1 truncate font-mono text-sm font-semibold text-slate-900 tabular-nums">
+          <p className="mt-1 truncate font-mono text-sm font-semibold text-foreground tabular-nums">
             {detail.internalRegistryId ?? "—"}
           </p>
         </div>
       </div>
 
       <div className="mt-8 grid min-w-0 gap-6 lg:grid-cols-5">
-        <Card className="min-w-0 rounded-2xl border-slate-200/90 bg-card shadow-sm lg:col-span-2">
+        <Card className="min-w-0 rounded-2xl border-border bg-card shadow-sm lg:col-span-2">
           <CardHeader>
             <CardTitle className="text-lg">Analytical summary</CardTitle>
             <CardDescription>
               Values as recorded for this batch reference.
             </CardDescription>
           </CardHeader>
-          <CardContent className="min-w-0 overflow-x-auto">
-            <Table className="min-w-[260px] w-full">
+          <CardContent className="min-w-0">
+            <Table className="w-full min-w-0 table-fixed">
               <TableBody>
                 <TableRow className="lg:hidden">
-                  <TableCell className="text-slate-500">
+                  <TableCell className="text-muted-foreground">
                     {mixCertificate ? "Blend summary purity" : "Purity"}
                   </TableCell>
                   <TableCell className="text-right font-medium tabular-nums">
@@ -657,7 +657,7 @@ export function CertificateViewer({
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className="text-slate-500 align-top">
+                  <TableCell className="text-muted-foreground align-top">
                     Molecular weight
                   </TableCell>
                   <TableCell className="text-right align-top">
@@ -668,7 +668,7 @@ export function CertificateViewer({
                     </div>
                     {certificate.molecular_weight == null &&
                     detail.componentAnalytes.length > 0 ? (
-                      <p className="mt-1 max-w-[220px] text-xs font-normal text-slate-500">
+                      <p className="mt-1 max-w-[220px] text-xs font-normal text-muted-foreground">
                         Multi-component reference line; MW quoted per analyte where
                         applicable.
                       </p>
@@ -676,7 +676,7 @@ export function CertificateViewer({
                     {certificate.molecular_weight == null &&
                     detail.componentAnalytes.length === 0 &&
                     /HCG/i.test(certificate.peptide_name) ? (
-                      <p className="mt-1 max-w-[220px] text-xs font-normal text-slate-500">
+                      <p className="mt-1 max-w-[220px] text-xs font-normal text-muted-foreground">
                         Not quoted as a single value (heterogeneous reference
                         material).
                       </p>
@@ -684,21 +684,21 @@ export function CertificateViewer({
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className="text-slate-500">
+                  <TableCell className="align-top text-muted-foreground">
                     HPLC / LC-MS notes
                   </TableCell>
-                  <TableCell className="text-right text-sm">
+                  <TableCell className="max-w-0 whitespace-normal break-words text-right align-top text-sm">
                     {certificate.hplc_purity ?? "—"}
                   </TableCell>
                 </TableRow>
                 <TableRow className="lg:hidden">
-                  <TableCell className="text-slate-500">LC-MS (ppm)</TableCell>
+                  <TableCell className="text-muted-foreground">LC-MS (ppm)</TableCell>
                   <TableCell className="text-right font-medium tabular-nums">
                     {certificate.lcms_ppm != null ? certificate.lcms_ppm : "—"}
                   </TableCell>
                 </TableRow>
                 <TableRow className="lg:hidden">
-                  <TableCell className="text-slate-500">
+                  <TableCell className="text-muted-foreground">
                     Batch / reference
                   </TableCell>
                   <TableCell className="text-right font-mono text-sm tabular-nums">
@@ -707,7 +707,7 @@ export function CertificateViewer({
                 </TableRow>
                 {detail.internalRegistryId ? (
                   <TableRow className="lg:hidden">
-                    <TableCell className="text-slate-500">
+                    <TableCell className="text-muted-foreground">
                       Registry ID
                     </TableCell>
                     <TableCell className="text-right font-mono text-sm tabular-nums">
@@ -716,48 +716,50 @@ export function CertificateViewer({
                   </TableRow>
                 ) : null}
                 <TableRow>
-                  <TableCell className="text-slate-500">Instrument</TableCell>
-                  <TableCell className="text-right text-sm">
+                  <TableCell className="align-top text-muted-foreground">
+                    Instrument
+                  </TableCell>
+                  <TableCell className="max-w-0 whitespace-normal break-words text-right align-top text-sm">
                     {detail.instrument ?? "—"}
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className="text-slate-500">Column</TableCell>
-                  <TableCell className="text-right text-sm">
+                  <TableCell className="align-top text-muted-foreground">Column</TableCell>
+                  <TableCell className="max-w-0 whitespace-normal break-words text-right align-top text-sm">
                     {detail.column ?? "—"}
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className="text-slate-500">Method</TableCell>
-                  <TableCell className="text-right text-sm">
+                  <TableCell className="align-top text-muted-foreground">Method</TableCell>
+                  <TableCell className="max-w-0 whitespace-normal break-words text-right align-top text-sm">
                     {detail.method ?? "—"}
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className="text-slate-500">Detection</TableCell>
-                  <TableCell className="text-right text-sm">
+                  <TableCell className="align-top text-muted-foreground">Detection</TableCell>
+                  <TableCell className="max-w-0 whitespace-normal break-words text-right align-top text-sm">
                     {detail.detection ?? "—"}
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell className="text-slate-500">Testing date</TableCell>
+                  <TableCell className="text-muted-foreground">Testing date</TableCell>
                   <TableCell className="text-right text-sm">
                     {testingDateDisplay ?? "—"}
                   </TableCell>
                 </TableRow>
                 {showDetailLabNotes ? (
                   <TableRow>
-                    <TableCell className="text-slate-500">
+                    <TableCell className="align-top text-muted-foreground">
                       Lab notes (details)
                     </TableCell>
-                    <TableCell className="text-right text-sm">
+                    <TableCell className="max-w-0 whitespace-normal break-words text-right align-top text-sm">
                       {detail.hplcLcmsNotes}
                     </TableCell>
                   </TableRow>
                 ) : null}
                 {detail.endotoxinRequested != null ? (
                   <TableRow>
-                    <TableCell className="text-slate-500">
+                    <TableCell className="text-muted-foreground">
                       Endotoxin requested
                     </TableCell>
                     <TableCell className="text-right text-sm">
@@ -767,14 +769,14 @@ export function CertificateViewer({
                 ) : null}
                 {detail.notes ? (
                   <TableRow>
-                    <TableCell className="text-slate-500">Notes</TableCell>
-                    <TableCell className="text-right text-sm">
+                    <TableCell className="align-top text-muted-foreground">Notes</TableCell>
+                    <TableCell className="max-w-0 whitespace-normal break-words text-right align-top text-sm">
                       {detail.notes}
                     </TableCell>
                   </TableRow>
                 ) : null}
                 <TableRow>
-                  <TableCell className="text-slate-500">Issued</TableCell>
+                  <TableCell className="text-muted-foreground">Issued</TableCell>
                   <TableCell className="text-right text-sm">
                     {new Date(certificate.created_at).toLocaleString("en-GB", {
                       dateStyle: "medium",
@@ -787,7 +789,7 @@ export function CertificateViewer({
           </CardContent>
         </Card>
 
-        <Card className="min-w-0 rounded-2xl border-slate-200/90 shadow-sm lg:col-span-3">
+        <Card className="min-w-0 rounded-2xl border-border shadow-sm lg:col-span-3">
           <CardHeader>
             <CardTitle className="text-lg">Representative chromatogram</CardTitle>
             <CardDescription>
@@ -808,7 +810,7 @@ export function CertificateViewer({
       </div>
 
       {detail.componentAnalytes.length > 0 ? (
-        <Card className="mt-6 rounded-2xl border-slate-200/90 bg-card shadow-sm">
+        <Card className="mt-6 rounded-2xl border-border bg-card shadow-sm">
           <CardHeader className="pb-2">
             <CardTitle className="text-base">Recorded components</CardTitle>
             <CardDescription>
@@ -816,7 +818,7 @@ export function CertificateViewer({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <ul className="list-inside list-disc space-y-1 text-sm text-slate-700">
+            <ul className="list-inside list-disc space-y-1 text-sm text-foreground">
               {detail.componentAnalytes.map((name) => (
                 <li key={name}>{name}</li>
               ))}
@@ -826,14 +828,14 @@ export function CertificateViewer({
       ) : null}
 
       {detail.componentPurity.length > 0 ? (
-        <Card className="mt-6 rounded-2xl border-slate-200/90 bg-card shadow-sm">
+        <Card className="mt-6 rounded-2xl border-border bg-card shadow-sm">
           <CardHeader className="pb-2">
             <CardTitle className="text-base">Component purity</CardTitle>
             <CardDescription>
               Individual analyte purity values recorded for this blend line.
             </CardDescription>
           </CardHeader>
-          <CardContent className="min-w-0 overflow-x-auto">
+          <CardContent className="min-w-0">
             <Table className="min-w-[280px]">
               <TableHeader>
                 <TableRow>
@@ -861,7 +863,7 @@ export function CertificateViewer({
       ) : null}
 
       {detail.batchImageUrl ? (
-        <Card className="mt-6 overflow-hidden rounded-2xl border border-slate-200/90 bg-card shadow-sm">
+        <Card className="mt-6 overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
           <CardHeader className="pb-2">
             <CardTitle className="text-lg">Batch reference photograph</CardTitle>
             <CardDescription>
@@ -871,9 +873,9 @@ export function CertificateViewer({
           </CardHeader>
           <CardContent className="px-4 pb-5 pt-0">
             {batchImageError ? (
-              <div className="flex min-h-[120px] flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-slate-200 bg-slate-50/80 px-4 py-8 text-center">
-                <ImageOff className="size-8 text-slate-400" aria-hidden />
-                <p className="text-xs text-slate-600">
+              <div className="flex min-h-[120px] flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-muted/80 px-4 py-8 text-center">
+                <ImageOff className="size-8 text-muted-foreground" aria-hidden />
+                <p className="text-xs text-muted-foreground">
                   Image could not be loaded in this browser. Try again later or open
                   the asset URL from your lab files.
                 </p>
@@ -883,7 +885,7 @@ export function CertificateViewer({
               <img
                 src={detail.batchImageUrl}
                 alt="Batch reference photograph"
-                className="max-h-[min(22rem,55vh)] w-full rounded-xl border border-slate-200/90 bg-slate-50 object-contain"
+                className="max-h-[min(22rem,55vh)] w-full rounded-xl border border-border bg-muted object-contain"
                 loading="lazy"
                 decoding="async"
                 onError={() => setBatchImageError(true)}
@@ -892,16 +894,16 @@ export function CertificateViewer({
           </CardContent>
         </Card>
       ) : detail.showProductPlaceholder ? (
-        <Card className="mt-6 overflow-hidden rounded-2xl border border-dashed border-slate-300/90 bg-slate-50/50 shadow-sm">
+        <Card className="mt-6 overflow-hidden rounded-2xl border border-dashed border-border bg-muted/50 shadow-sm">
           <CardContent className="flex min-h-[140px] flex-col items-center justify-center gap-3 px-6 py-8 text-center">
-            <div className="flex size-14 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-400 shadow-sm">
+            <div className="flex size-14 items-center justify-center rounded-2xl border border-border bg-card text-muted-foreground shadow-sm">
               <ImageOff className="size-7" aria-hidden />
             </div>
             <div>
-              <p className="text-sm font-semibold text-slate-800">
+              <p className="text-sm font-semibold text-foreground">
                 Batch imaging (placeholder)
               </p>
-              <p className="mt-1 max-w-md text-xs text-slate-600">
+              <p className="mt-1 max-w-md text-xs text-muted-foreground">
                 {detail.productPlaceholderCaption ??
                   "No product photograph is stored in the verification registry for this batch."}
               </p>
@@ -911,7 +913,7 @@ export function CertificateViewer({
       ) : null}
 
       {detail.additionalTests.length > 0 ? (
-        <Card className="mt-6 rounded-2xl border-slate-200/90 shadow-sm">
+        <Card className="mt-6 rounded-2xl border-border shadow-sm">
           <CardHeader>
             <CardTitle className="text-lg">Additional tests</CardTitle>
             <CardDescription>
@@ -919,7 +921,7 @@ export function CertificateViewer({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <ul className="list-inside list-disc space-y-1 text-sm text-slate-700">
+            <ul className="list-inside list-disc space-y-1 text-sm text-foreground">
               {detail.additionalTests.map((t) => (
                 <li key={t}>{t}</li>
               ))}
@@ -929,7 +931,7 @@ export function CertificateViewer({
       ) : null}
 
       {displayPeaks.length > 0 ? (
-        <Card className="mt-6 rounded-2xl border-slate-200/90 shadow-sm">
+        <Card className="mt-6 rounded-2xl border-border shadow-sm">
           <CardHeader>
             <CardTitle className="text-lg">Peak table</CardTitle>
             <CardDescription>
@@ -937,7 +939,7 @@ export function CertificateViewer({
               window.
             </CardDescription>
           </CardHeader>
-          <CardContent className="min-w-0 overflow-x-auto">
+          <CardContent className="min-w-0">
             <Table className="min-w-[280px]">
               <TableHeader>
                 <TableRow>
@@ -958,14 +960,14 @@ export function CertificateViewer({
                     </TableCell>
                   </TableRow>
                 ))}
-                <TableRow className="border-t border-slate-200 bg-slate-50/80">
+                <TableRow className="border-t border-border bg-muted/80">
                   <TableCell
                     colSpan={2}
-                    className="text-sm font-medium text-slate-600"
+                    className="text-sm font-medium text-muted-foreground"
                   >
                     Total (integrated area %)
                   </TableCell>
-                  <TableCell className="text-right font-mono text-sm font-semibold tabular-nums text-slate-900">
+                  <TableCell className="text-right font-mono text-sm font-semibold tabular-nums text-foreground">
                     {peakAreaTotal.toFixed(2)}
                   </TableCell>
                 </TableRow>
@@ -977,7 +979,7 @@ export function CertificateViewer({
 
       <AmpoulabsNote className="mt-8" />
 
-      <p className="mt-4 text-sm text-slate-600">
+      <p className="mt-4 text-sm text-muted-foreground">
         Reference data is provided for laboratory research traceability only.
         It does not constitute a specification for clinical or human use.
       </p>
@@ -987,7 +989,7 @@ export function CertificateViewer({
           href="/verify"
           className={cn(
             buttonVariants({ variant: "ghost" }),
-            "mt-6 inline-flex text-brand-600 transition-colors hover:text-brand-500",
+            "mt-6 inline-flex text-[var(--accent-primary)] transition-colors hover:text-[var(--accent-hover)]",
           )}
         >
           <ArrowLeft className="mr-2 size-4" aria-hidden />

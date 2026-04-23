@@ -56,7 +56,7 @@ export function NewTestForm() {
         toast.success("Certificate created", {
           description: `Code ${result.code} — visible on public verify.`,
           className:
-            "!border !border-success-500/35 !bg-emerald-50/95 !text-[#0f172a] !shadow-md",
+            "!border !border-success-500/40 !bg-[var(--success-dim)] !text-[var(--text-primary)] !shadow-md",
         });
         form.reset();
         router.push(`/verify?code=${encodeURIComponent(result.code)}`);
@@ -103,11 +103,11 @@ export function NewTestForm() {
           control={form.control}
           name="is_blend"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-start gap-3 rounded-lg border border-slate-200 p-4">
+            <FormItem className="flex flex-row items-start gap-3 rounded-lg border border-border bg-[var(--bg-surface)] p-4">
               <FormControl>
                 <input
                   type="checkbox"
-                  className="mt-1 size-4 rounded border-slate-300"
+                  className="mt-1 size-4 rounded border-border accent-[var(--accent-primary)]"
                   checked={field.value}
                   onChange={(event) => {
                     const checked = event.target.checked;
@@ -166,9 +166,9 @@ export function NewTestForm() {
               )}
             />
           ) : (
-            <div className="space-y-3 rounded-lg border border-slate-200 p-4 sm:col-span-2">
+            <div className="space-y-3 rounded-lg border border-border bg-[var(--bg-surface)] p-4 sm:col-span-2">
               <div className="flex items-center justify-between">
-                <p className="text-sm font-medium text-slate-900">Component purity</p>
+                <p className="text-sm font-medium text-foreground">Component purity</p>
                 <Button
                   type="button"
                   variant="outline"
@@ -180,14 +180,14 @@ export function NewTestForm() {
                   Add component
                 </Button>
               </div>
-              <p className="text-xs text-slate-600">
+              <p className="text-xs text-muted-foreground">
                 Record each analyte separately. Every purity value must be between
                 99.11 and 99.86.
               </p>
               {componentPurity.fields.map((field, index) => (
                 <div
                   key={field.id}
-                  className="grid gap-3 rounded-md border border-slate-100 p-3 sm:grid-cols-[1fr_180px_auto]"
+                  className="grid gap-3 rounded-md border border-border bg-[var(--bg-base)] p-3 sm:grid-cols-[1fr_180px_auto]"
                 >
                   <FormField
                     control={form.control}
@@ -317,11 +317,11 @@ export function NewTestForm() {
           control={form.control}
           name="endotoxin"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-start gap-3 rounded-lg border border-slate-200 p-4">
+            <FormItem className="flex flex-row items-start gap-3 rounded-lg border border-border bg-[var(--bg-surface)] p-4">
               <FormControl>
                 <input
                   type="checkbox"
-                  className="mt-1 size-4 rounded border-slate-300"
+                  className="mt-1 size-4 rounded border-border accent-[var(--accent-primary)]"
                   checked={field.value}
                   onChange={field.onChange}
                 />
@@ -350,7 +350,7 @@ export function NewTestForm() {
             href="/dashboard/certificates"
             className={cn(
               buttonVariants({ variant: "outline" }),
-              "border-slate-200",
+              "border-border",
             )}
           >
             Cancel

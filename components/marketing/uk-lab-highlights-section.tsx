@@ -1,85 +1,95 @@
 import Link from "next/link";
-import { Clock, MapPin, ShieldCheck, Sparkles } from "lucide-react";
 
 import { RevealOnView } from "@/components/marketing/reveal-on-view";
-import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
 
-const highlights = [
+const features = [
   {
-    icon: MapPin,
-    title: "UK-based independent testing",
+    icon: "🧪",
+    title: "UK-Based Independent Testing",
     body: "Analytical work is coordinated through our UK laboratory network with clear chain-of-custody and documented methods—so your verification story stays traceable and audit-ready.",
+    span: "normal" as const,
   },
   {
-    icon: Clock,
-    title: "Fast certificate delivery",
+    icon: "⚡",
+    title: "Fast Certificate Delivery",
     body: "Digital certificates with QR verification are issued as soon as analysis and review complete. Check status anytime in the Lab Portal—no guesswork on where your batch stands.",
+    span: "wide" as const,
   },
   {
-    icon: ShieldCheck,
-    title: "Built for verification",
+    icon: "🔍",
+    title: "Built for Verification",
     body: "HPLC traces, identity checks, and certificate codes are designed for research traceability—not clinical claims. Everything stays aligned with independent third-party verification.",
+    span: "normal" as const,
   },
   {
-    icon: Sparkles,
-    title: "Lab Portal workflow",
-    body: "From the Lab Portal, add new lab tests and publish certificate-ready records in one place. Public verification stays a single scan or code lookup away.",
+    icon: "🖥",
+    title: "Lab Portal Workflow",
+    body: "From the Lab Portal, register batches and publish certificate-ready records in one place. Public verification stays a single scan or code lookup away.",
+    span: "normal" as const,
   },
 ];
 
 export function UkLabHighlightsSection() {
   return (
-    <section className="border-b border-slate-200/90 bg-[#f8fafc] py-20 sm:py-28">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section className="relative overflow-hidden border-b border-[var(--bg-border)] bg-[var(--bg-base)] py-20 sm:py-28">
+      <div
+        className="pointer-events-none absolute inset-0 opacity-100"
+        style={{ background: "var(--gradient-mesh)" }}
+        aria-hidden
+      />
+      <div className="relative marketing-container">
         <RevealOnView className="mx-auto max-w-3xl text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-accent-sky-700">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--text-muted)]">
             Why teams choose Verifypeps
           </p>
-          <h2 className="mt-4 text-3xl font-bold tracking-tight text-[#0f172a] sm:text-4xl">
-            UK laboratory rigour. Certificates you can prove.
+          <h2 className="mt-4 font-display text-[clamp(1.8rem,4vw,3rem)] tracking-tight text-[var(--text-primary)]">
+            UK laboratory rigour.
+            <br />
+            <em className="italic text-[var(--accent-primary)]">Certificates you can prove.</em>
           </h2>
-          <p className="mt-4 text-lg leading-relaxed text-[#334155]">
-            Independent peptide verification with a premium digital certificate
-            experience—focused on research traceability, not sales tiers.
+          <p className="mt-4 text-lg leading-relaxed text-[var(--text-secondary)]">
+            Independent peptide verification with a premium digital certificate experience—focused on research traceability.
           </p>
         </RevealOnView>
 
-        <RevealOnView className="mt-16 grid gap-8 sm:grid-cols-2" staggerChildren>
-          {highlights.map((item) => (
-            <div
+        <RevealOnView className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-2" staggerChildren>
+          {features.map((item) => (
+            <article
               key={item.title}
-              className="group rounded-2xl border border-slate-200/90 bg-white p-8 shadow-sm transition-all duration-300 hover:border-brand-200 hover:shadow-md"
+              className={cn(
+                "group rounded-[var(--radius-xl)] border border-[var(--bg-border)] bg-[var(--gradient-card)] p-8 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]",
+                "hover:-translate-y-1 hover:border-[rgba(0,196,180,0.3)] hover:shadow-[var(--shadow-glow)] motion-reduce:hover:translate-y-0",
+                item.span === "wide" && "md:col-span-2",
+              )}
             >
-              <span className="flex size-12 items-center justify-center rounded-xl bg-gradient-to-br from-brand-600 to-brand-500 text-white shadow-sm transition-transform duration-300 group-hover:scale-105">
-                <item.icon className="size-6" aria-hidden />
-              </span>
-              <h3 className="mt-5 text-xl font-semibold text-[#0f172a]">
+              <div className="flex size-10 items-center justify-center rounded-full bg-[var(--accent-subtle)] text-2xl ring-1 ring-[var(--bg-border)]">
+                <span aria-hidden>{item.icon}</span>
+              </div>
+              <h3 className="mt-5 text-lg font-semibold tracking-tight text-[var(--text-primary)]">
                 {item.title}
               </h3>
-              <p className="mt-3 text-sm leading-relaxed text-[#334155]">
-                {item.body}
-              </p>
-            </div>
+              <p className="mt-3 text-[15px] leading-[1.7] text-[var(--text-secondary)]">{item.body}</p>
+              <Link
+                href="/login"
+                className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-[var(--accent-primary)] transition-colors hover:text-[var(--accent-hover)]"
+              >
+                Learn more <span aria-hidden>→</span>
+              </Link>
+            </article>
           ))}
         </RevealOnView>
 
         <RevealOnView className="mt-14 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Link
             href="/login"
-            className={cn(
-              buttonVariants({ size: "lg" }),
-              "min-w-[200px] shadow-md",
-            )}
+            className="btn-primary-motion inline-flex min-w-[220px] items-center justify-center rounded-[var(--radius-pill)] bg-[var(--accent-primary)] px-8 py-3 text-base font-semibold text-[var(--text-inverse)] hover:bg-[var(--accent-hover)]"
           >
-            Open Lab Portal
+            Start Verification →
           </Link>
           <Link
             href="/verify"
-            className={cn(
-              buttonVariants({ variant: "outline", size: "lg" }),
-              "min-w-[200px] border-slate-200 bg-white shadow-sm hover:bg-slate-50",
-            )}
+            className="inline-flex min-w-[220px] items-center justify-center rounded-[var(--radius-pill)] border border-[var(--bg-border)] px-8 py-3 text-base font-semibold text-[var(--text-primary)] transition-colors hover:border-[var(--accent-primary)] hover:bg-[var(--accent-subtle)]"
           >
             Verify a certificate
           </Link>

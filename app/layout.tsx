@@ -1,25 +1,34 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Geist_Mono } from "next/font/google";
+import { DM_Mono, DM_Sans, Instrument_Serif } from "next/font/google";
 
 import { Providers } from "@/app/providers";
 
 import "./globals.css";
 
-const inter = Inter({
+const dmSans = DM_Sans({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const instrumentSerif = Instrument_Serif({
+  weight: "400",
   subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const dmMono = DM_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-mono",
+  display: "swap",
 });
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0f766e",
+  themeColor: "#080D14",
 };
 
 export const metadata: Metadata = {
@@ -56,10 +65,10 @@ export default function RootLayout({
   return (
     <html
       lang="en-GB"
-      className={`${inter.variable} ${geistMono.variable} h-full`}
+      className={`${dmSans.variable} ${instrumentSerif.variable} ${dmMono.variable} h-full`}
       suppressHydrationWarning
     >
-      <body className="min-h-full scroll-pt-20 scroll-smooth bg-background font-sans text-foreground">
+      <body className="min-h-full scroll-pt-20 scroll-smooth bg-[var(--bg-base)] font-sans text-[var(--text-secondary)] antialiased">
         <Providers>
           <div className="flex min-h-full flex-col">{children}</div>
         </Providers>

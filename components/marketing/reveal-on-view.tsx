@@ -33,7 +33,7 @@ export function RevealOnView({
           observer.disconnect();
         }
       },
-      { root: null, rootMargin, threshold: 0.08 },
+      { root: null, rootMargin, threshold: 0.1 },
     );
 
     observer.observe(el);
