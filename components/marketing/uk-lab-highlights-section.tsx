@@ -24,7 +24,7 @@ const highlights = [
   {
     icon: Sparkles,
     title: "Lab Portal workflow",
-    body: "Register, add new lab tests, and publish certificate-ready records from one place. Public verification stays a single scan or code lookup away.",
+    body: "From the Lab Portal, add new lab tests and publish certificate-ready records in one place. Public verification stays a single scan or code lookup away.",
   },
 ];
 

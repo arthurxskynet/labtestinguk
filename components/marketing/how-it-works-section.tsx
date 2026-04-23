@@ -1,12 +1,12 @@
-import { FileCheck, Microscope, UserPlus } from "lucide-react";
+import { ClipboardList, FileCheck, Microscope } from "lucide-react";
 
 import { RevealOnView } from "@/components/marketing/reveal-on-view";
 
 const steps = [
   {
-    title: "Register & submit",
-    body: "Create your Verifypeps account and use the Lab Portal to register a batch and log sample receipt. Chain-of-custody stays visible from submission through certificate issue.",
-    icon: UserPlus,
+    title: "Submit in the Lab Portal",
+    body: "Use the Lab Portal to register a batch and log sample receipt. Chain-of-custody stays visible from submission through certificate issue.",
+    icon: ClipboardList,
   },
   {
     title: "Lab analysis",

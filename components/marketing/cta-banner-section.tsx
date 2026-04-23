@@ -34,14 +34,6 @@ export function CtaBannerSection() {
             Contact Us
           </Link>
         </div>
-        <p className="mt-8">
-          <Link
-            href="/register"
-            className="text-sm font-medium text-accent-mint underline-offset-4 transition-colors hover:text-white hover:underline"
-          >
-            Create Account
-          </Link>
-        </p>
       </div>
     </section>
   );

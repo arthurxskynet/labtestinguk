@@ -14,6 +14,10 @@ function forwardRequestWithPathname(request: NextRequest, pathname: string) {
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
+  if (pathname === "/register") {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
   try {
     const forwardRequest = forwardRequestWithPathname(request, pathname);
 
@@ -73,7 +77,7 @@ export async function middleware(request: NextRequest) {
       }
     }
 
-    const isAuthPage = pathname === "/login" || pathname === "/register";
+    const isAuthPage = pathname === "/login";
     if (isAuthPage && user) {
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }

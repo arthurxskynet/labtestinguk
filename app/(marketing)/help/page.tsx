@@ -86,10 +86,10 @@ export default function HelpPage() {
           <section id="technical">
             <h2 className="text-2xl font-bold text-slate-900">Technical</h2>
             <p className="mt-4 text-sm leading-relaxed">
-              For sellers: create an account to generate verified certificates for
-              your products.{" "}
+              For sellers: sign in to the Lab Portal to generate verified
+              certificates for your products.{" "}
               <Link href="/login" className="text-brand-600 hover:underline">
-                Sign in or register here
+                Sign in here
               </Link>
               .
             </p>

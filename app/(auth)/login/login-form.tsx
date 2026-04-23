@@ -131,15 +131,6 @@ export function LoginForm() {
         >
           {submitting ? "Signing in…" : "Sign in"}
         </Button>
-        <p className="text-center text-sm text-slate-600">
-          No account?{" "}
-          <Link
-            href="/register"
-            className="font-medium text-brand-600 hover:underline"
-          >
-            Create one
-          </Link>
-        </p>
         <Link
           href="/"
           className={cn(

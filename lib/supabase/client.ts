@@ -1,7 +1,7 @@
 import { createBrowserClient } from "@supabase/ssr";
 
 /**
- * Browser client for Client Components (login, register, client fetch).
+ * Browser client for Client Components (login, client fetch).
  */
 export function createBrowserSupabaseClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
