@@ -5,8 +5,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle2, Clock, Mail, MapPin } from "lucide-react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
 
+import { submitContactEnquiry } from "@/lib/actions/contact";
+import {
+  CONTACT_SUBJECT_LABELS,
+  CONTACT_SUBJECTS,
+  contactSchema,
+  type ContactInput,
+} from "@/lib/validations/contact";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -20,37 +26,20 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 
-const contactSchema = z.object({
-  name: z.string().min(2, "Please enter your name"),
-  email: z.string().email("Enter a valid email"),
-  subject: z.enum([
-    "general",
-    "services",
-    "technical",
-    "verification",
-    "partnership",
-    "other",
-  ]),
-  message: z.string().min(10, "Please enter a longer message"),
-});
-
-type ContactValues = z.infer<typeof contactSchema>;
-
-const subjectOptions: { value: ContactValues["subject"]; label: string }[] = [
-  { value: "general", label: "General enquiry" },
-  { value: "services", label: "Services & verification" },
-  { value: "technical", label: "Technical support" },
-  { value: "verification", label: "Certificate verification" },
-  { value: "partnership", label: "Partnership opportunities" },
-  { value: "other", label: "Other" },
-];
+const subjectOptions = CONTACT_SUBJECTS.map((value) => ({
+  value,
+  label: CONTACT_SUBJECT_LABELS[value],
+}));
 
 const fieldClass =
   "flex min-h-[52px] w-full rounded-[var(--radius-md)] border border-[var(--bg-border)] bg-[var(--bg-surface)] px-4 py-3 text-[15px] text-[var(--text-primary)] shadow-inner transition-[border-color,box-shadow] duration-200 placeholder:text-[var(--text-muted)] focus-visible:border-[var(--accent-primary)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-[var(--accent-glow)]";
 
 export function ContactFormSection() {
   const [sent, setSent] = React.useState(false);
-  const form = useForm<ContactValues>({
+  const [pending, startTransition] = React.useTransition();
+  const formReadyAt = React.useRef(Date.now());
+  const honeypotRef = React.useRef<HTMLInputElement>(null);
+  const form = useForm<ContactInput>({
     resolver: zodResolver(contactSchema),
     defaultValues: {
       name: "",
@@ -60,13 +49,27 @@ export function ContactFormSection() {
     },
   });
 
-  const onSubmit: SubmitHandler<ContactValues> = () => {
-    toast.success("Message sent", {
-      description:
-        "Our team typically responds within 24 hours. This demo does not transmit data yet.",
+  const onSubmit: SubmitHandler<ContactInput> = (values) => {
+    startTransition(async () => {
+      const result = await submitContactEnquiry({
+        ...values,
+        sourcePageUrl: window.location.href,
+        formReadyAt: formReadyAt.current,
+        website: honeypotRef.current?.value ?? "",
+      });
+
+      if (result.ok) {
+        toast.success("Message sent", {
+          description:
+            "We aim to respond within one UK business day where possible.",
+        });
+        form.reset();
+        setSent(true);
+        return;
+      }
+
+      toast.error(result.error);
     });
-    form.reset();
-    setSent(true);
   };
 
   return (
@@ -119,7 +122,9 @@ export function ContactFormSection() {
                     <p className="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
                       Response time
                     </p>
-                    <p className="mt-1 text-[15px] text-[var(--text-primary)]">Typically within 24 hours</p>
+                    <p className="mt-1 text-[15px] text-[var(--text-primary)]">
+                      We aim to respond within one UK business day where possible
+                    </p>
                   </div>
                 </li>
               </ul>
@@ -147,6 +152,15 @@ export function ContactFormSection() {
               ) : (
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    <input
+                      ref={honeypotRef}
+                      type="text"
+                      name="website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      aria-hidden
+                      className="absolute left-[-9999px] h-px w-px opacity-0"
+                    />
                     <FormField
                       control={form.control}
                       name="name"
@@ -216,9 +230,10 @@ export function ContactFormSection() {
                     />
                     <Button
                       type="submit"
-                      className="btn-primary-motion h-14 w-full rounded-[var(--radius-pill)] bg-[var(--accent-primary)] text-base font-semibold text-[var(--text-inverse)] hover:bg-[var(--accent-hover)]"
+                      disabled={pending}
+                      className="btn-primary-motion h-14 w-full rounded-[var(--radius-pill)] bg-[var(--accent-primary)] text-base font-semibold text-[var(--text-inverse)] hover:bg-[var(--accent-hover)] disabled:opacity-60"
                     >
-                      Send message
+                      {pending ? "Sending…" : "Send message"}
                     </Button>
                   </form>
                 </Form>
@@ -226,7 +241,7 @@ export function ContactFormSection() {
             </div>
             {!sent ? (
               <p className="mt-6 text-center text-sm text-[var(--text-muted)] lg:text-left">
-                Our team typically responds within 24 hours.
+                Our team aims to respond within one UK business day where possible.
               </p>
             ) : null}
           </div>

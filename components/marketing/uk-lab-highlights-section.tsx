@@ -6,26 +6,26 @@ import { cn } from "@/lib/utils";
 const features = [
   {
     icon: "🧪",
-    title: "UK-Based Independent Testing",
-    body: "Analytical work is coordinated through our UK laboratory network with clear chain-of-custody and documented methods—so your verification story stays traceable and audit-ready.",
+    title: "UK-coordinated service",
+    body: "Sample intake and documentation are coordinated from the UK. Selected methods—including certain HPLC tests—may be performed by qualified partner laboratories in the European Union.",
     span: "normal" as const,
   },
   {
     icon: "⚡",
-    title: "Fast Certificate Delivery",
-    body: "Digital certificates with QR verification are issued as soon as analysis and review complete. Check status anytime in the Lab Portal—no guesswork on where your batch stands.",
+    title: "Structured certificate delivery",
+    body: "Digital certificates with QR registry links are issued when analysis and review are complete. Turnaround depends on method, queue, and sample condition.",
     span: "wide" as const,
   },
   {
     icon: "🔍",
-    title: "Built for Verification",
-    body: "HPLC traces, identity checks, and certificate codes are designed for research traceability—not clinical claims. Everything stays aligned with independent third-party verification.",
+    title: "Built for documentation",
+    body: "HPLC traces, identity checks, and certificate codes support research traceability—not clinical claims or suitability assessments.",
     span: "normal" as const,
   },
   {
     icon: "🖥",
-    title: "Lab Portal Workflow",
-    body: "From the Lab Portal, register batches and publish certificate-ready records in one place. Public verification stays a single scan or code lookup away.",
+    title: "Lab Portal workflow",
+    body: "Register batches and publish certificate-ready records in one place. Public registry lookup stays a single scan or code entry away.",
     span: "normal" as const,
   },
 ];
@@ -41,15 +41,15 @@ export function UkLabHighlightsSection() {
       <div className="relative marketing-container">
         <RevealOnView className="mx-auto max-w-3xl text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[var(--text-muted)]">
-            Why teams choose Verifypeps
+            Service overview
           </p>
           <h2 className="mt-4 font-display text-[clamp(1.8rem,4vw,3rem)] tracking-tight text-[var(--text-primary)]">
-            UK laboratory rigour.
+            UK-coordinated service.
             <br />
-            <em className="italic text-[var(--accent-primary)]">Certificates you can prove.</em>
+            <em className="italic text-[var(--accent-primary)]">EU partner labs where required.</em>
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-[var(--text-secondary)]">
-            Independent peptide verification with a premium digital certificate experience—focused on research traceability.
+            Independent peptide analytical documentation with a structured digital certificate experience—focused on research traceability.
           </p>
         </RevealOnView>
 
@@ -71,10 +71,10 @@ export function UkLabHighlightsSection() {
               </h3>
               <p className="mt-3 text-[15px] leading-[1.7] text-[var(--text-secondary)]">{item.body}</p>
               <Link
-                href="/login"
+                href="/lab-partner-disclosure"
                 className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-[var(--accent-primary)] transition-colors hover:text-[var(--accent-hover)]"
               >
-                Learn more <span aria-hidden>→</span>
+                Partner lab disclosure <span aria-hidden>→</span>
               </Link>
             </article>
           ))}
@@ -85,13 +85,13 @@ export function UkLabHighlightsSection() {
             href="/login"
             className="btn-primary-motion inline-flex min-w-[220px] items-center justify-center rounded-[var(--radius-pill)] bg-[var(--accent-primary)] px-8 py-3 text-base font-semibold text-[var(--text-inverse)] hover:bg-[var(--accent-hover)]"
           >
-            Start Verification →
+            Open Lab Portal
           </Link>
           <Link
             href="/verify"
             className="inline-flex min-w-[220px] items-center justify-center rounded-[var(--radius-pill)] border border-[var(--bg-border)] px-8 py-3 text-base font-semibold text-[var(--text-primary)] transition-colors hover:border-[var(--accent-primary)] hover:bg-[var(--accent-subtle)]"
           >
-            Verify a certificate
+            Lookup a certificate
           </Link>
         </RevealOnView>
       </div>

@@ -8,17 +8,17 @@ const steps = [
     title: "Submit in the Lab Portal",
     body: "Use the Lab Portal to register a batch and log sample receipt. Chain-of-custody stays visible from submission through certificate issue.",
     icon: ClipboardList,
-    bullets: ["UK laboratory workflow", "Secure batch registration"],
+    bullets: ["Documented intake workflow", "Secure batch registration"],
   },
   {
     title: "Lab analysis",
-    body: "HPLC purity testing and LC-MS identity verification by experienced analysts using validated methods and professional-grade instrumentation.",
+    body: "HPLC purity testing and LC-MS identity confirmation performed under documented methods. Certain HPLC work may be allocated to qualified EU partner laboratories.",
     icon: Microscope,
     bullets: ["Analyst-reviewed data package", "Documented methods"],
   },
   {
     title: "Digital certificate",
-    body: "Receive a QR-verified digital certificate with chromatogram data, purity results, and identity confirmation—ready for public verification.",
+    body: "Receive a QR-linked digital certificate with chromatogram data, purity results, and identity confirmation—ready for public registry lookup.",
     icon: FileCheck,
     bullets: ["QR-linked documentation", "Instant public lookup"],
   },
@@ -42,7 +42,7 @@ export function HowItWorksSection() {
             How It Works
           </h2>
           <p className="mt-4 text-lg text-[var(--text-secondary)]">
-            Three clear steps from portal submission to verified certificate
+            Three clear steps from portal submission to registry-linked certificate
           </p>
         </RevealOnView>
 
@@ -116,7 +116,7 @@ export function HowItWorksSection() {
             href="/login"
             className="btn-primary-motion inline-flex items-center justify-center rounded-[var(--radius-pill)] bg-[var(--accent-primary)] px-10 py-3 text-base font-semibold text-[var(--text-inverse)] hover:bg-[var(--accent-hover)]"
           >
-            Start Verification →
+            Start in Lab Portal →
           </Link>
         </RevealOnView>
       </div>

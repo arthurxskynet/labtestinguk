@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
-import { AmpoulabsNote } from "@/components/certificates/ampoulabs-note";
+import { CertificateComplianceFooter } from "@/components/compliance/certificate-compliance-footer";
+import { VerificationDisclaimer } from "@/components/compliance/verification-disclaimer";
 import { CertificateCodeForm } from "@/components/verify/certificate-code-form";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
@@ -21,13 +22,13 @@ export function VerifyLookupHero() {
           Back to home
         </Link>
         <p className="text-sm font-semibold uppercase tracking-wider text-[var(--accent-primary)]">
-          Certificate verification
+          Certificate registry
         </p>
         <h1 className="mt-3 font-display text-4xl tracking-tight text-[var(--text-primary)] sm:text-5xl">
-          Verify Authenticity
+          Lookup a certificate record
         </h1>
         <p className="mt-4 text-lg text-[var(--text-secondary)]">
-          Enter a certificate ID or scan the QR code to instantly verify authenticity and view complete analysis data
+          Enter a certificate ID or scan the QR code to view the registry entry and reported analytical data for research documentation.
         </p>
         <div className="mt-10 rounded-[var(--radius-xl)] border border-[var(--bg-border)] bg-[var(--bg-elevated)] p-6 shadow-[var(--shadow-elevated)] sm:p-8">
           <CertificateCodeForm placeholder="e.g. VP-A3F7B2-KPVX" />
@@ -49,7 +50,11 @@ export function VerifyLookupHero() {
               Or view sample certificate preview
             </Link>
           </p>
-          <AmpoulabsNote className="mt-6 text-center" />
+          <VerificationDisclaimer className="mt-6" />
+          <CertificateComplianceFooter
+            className="mt-4"
+            showResearchUseOnly={false}
+          />
         </div>
       </div>
     </div>

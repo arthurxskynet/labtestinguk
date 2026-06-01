@@ -128,7 +128,7 @@ insert into public.certificates (
 values
   (
     'VP-K8NQ3P-7H2R',
-    'Bacteriostatic water (diluent)',
+    'Aqueous vehicle reference (lab QC)',
     99.4212,
     null,
     'HPLC: benzyl alcohol and aqueous vehicle profile per internal SOP; no peptide peak expected.',

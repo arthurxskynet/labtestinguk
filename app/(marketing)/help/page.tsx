@@ -56,7 +56,15 @@ export default function HelpPage() {
             <p className="mt-4 text-sm leading-relaxed">
               Verifypeps provides independent analytical testing for research
               and verification. Certificates summarise methods, results, and QC
-              checks for the sample as received.
+              checks for the sample as received. See our{" "}
+              <Link href="/research-use-only" className="text-brand-600 hover:underline">
+                Research Use Only policy
+              </Link>{" "}
+              and{" "}
+              <Link href="/lab-partner-disclosure" className="text-brand-600 hover:underline">
+                laboratory partner disclosure
+              </Link>
+              .
             </p>
           </section>
 
@@ -67,27 +75,33 @@ export default function HelpPage() {
             <p className="mt-4 text-sm leading-relaxed">
               Each certificate includes a unique ID and QR link to our public{" "}
               <Link href="/verify" className="text-brand-600 hover:underline">
-                verification page
+                registry lookup page
               </Link>
-              . Anyone can confirm that a PDF matches our records without signing
-              in.
+              . Anyone can confirm that displayed data matches our registry record
+              at the time of lookup. This confirms record consistency only—not
+              product safety or suitability for any use.
             </p>
           </section>
 
           <section id="process">
             <h2 className="text-2xl font-bold text-slate-900">Process</h2>
             <p className="mt-4 text-sm leading-relaxed">
-              Order online, ship your sample to our UK receiving lab, and track
-              status in your account. Analysts review chromatograms and MS data
-              before release.
+              Register your batch in the Lab Portal, ship your sample to the
+              UK intake address provided at order acceptance, and track status in
+              your account. Selected HPLC methods may be performed by EU partner
+              laboratories—see our{" "}
+              <Link href="/lab-partner-disclosure" className="text-brand-600 hover:underline">
+                laboratory partner disclosure
+              </Link>
+              .
             </p>
           </section>
 
           <section id="technical">
             <h2 className="text-2xl font-bold text-slate-900">Technical</h2>
             <p className="mt-4 text-sm leading-relaxed">
-              For sellers: sign in to the Lab Portal to generate verified
-              certificates for your products.{" "}
+              For clients: sign in to the Lab Portal to register batches and
+              manage certificate records.{" "}
               <Link href="/login" className="text-brand-600 hover:underline">
                 Sign in here
               </Link>

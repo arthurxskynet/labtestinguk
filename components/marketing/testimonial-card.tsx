@@ -1,4 +1,4 @@
-import { CheckCircle2, Star } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 
 export type TestimonialCardProps = {
   name: string;
@@ -51,23 +51,11 @@ export function TestimonialCard({
               <p className="mt-0.5 text-sm font-medium leading-snug text-muted-foreground">
                 {location}
               </p>
-              <div
-                className="mt-2 flex gap-0.5"
-                aria-label="5 out of 5 stars"
-              >
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star
-                    key={i}
-                    className="size-4 shrink-0 fill-[#FACC15] text-[#FACC15] sm:size-[1.125rem]"
-                    aria-hidden
-                  />
-                ))}
-              </div>
             </div>
           </div>
-          <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-success-500/25 bg-emerald-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-success-600 shadow-sm sm:text-xs">
-            <CheckCircle2 className="size-3.5 text-success-500" aria-hidden />
-            Verified Customer
+          <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-slate-600 shadow-sm sm:text-xs">
+            <CheckCircle2 className="size-3.5 text-slate-500" aria-hidden />
+            Client comment
           </span>
         </div>
 

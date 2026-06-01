@@ -2,8 +2,12 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import type { AdminCertificateRecord } from "@/types/admin-certificate";
+import type { CertificateStatus } from "@/types/certificate";
+import { updateCertificateStatus } from "@/lib/actions/certificates";
 import { batchRefFromDetails } from "@/lib/data/admin-certificates";
 import { CertificateViewer } from "@/components/certificates/certificate-viewer";
 import { Badge } from "@/components/ui/badge";
@@ -28,6 +32,8 @@ import {
 
 const STATUS_OPTIONS = ["all", "verified", "pending", "revoked"] as const;
 
+const REVIEW_STATUSES: CertificateStatus[] = ["verified", "pending", "revoked"];
+
 function statusBadgeVariant(
   status: string,
 ): "default" | "secondary" | "destructive" | "outline" {
@@ -50,6 +56,23 @@ export function AdminCertificatesTable({
   const [selected, setSelected] = React.useState<AdminCertificateRecord | null>(
     null,
   );
+  const [statusUpdating, startStatusTransition] = React.useTransition();
+  const router = useRouter();
+
+  function handleStatusUpdate(id: string, nextStatus: CertificateStatus) {
+    startStatusTransition(async () => {
+      const result = await updateCertificateStatus(id, nextStatus);
+      if (result.ok) {
+        toast.success(`Status updated to ${nextStatus}`);
+        router.refresh();
+        setSelected((current) =>
+          current && current.id === id ? { ...current, status: nextStatus } : current,
+        );
+        return;
+      }
+      toast.error(result.error);
+    });
+  }
 
   const filtered = React.useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -202,7 +225,31 @@ export function AdminCertificatesTable({
             <DialogTitle>Certificate</DialogTitle>
           </DialogHeader>
           {selected ? (
-            <CertificateViewer certificate={selected} variant="modal" />
+            <>
+              <div className="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-4">
+                <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  Registry review
+                </span>
+                {REVIEW_STATUSES.map((s) => (
+                  <Button
+                    key={s}
+                    type="button"
+                    size="sm"
+                    variant={String(selected.status).toLowerCase() === s ? "default" : "outline"}
+                    className={cn(
+                      "rounded-xl capitalize",
+                      String(selected.status).toLowerCase() === s &&
+                        "bg-success-600 hover:bg-success-600/90",
+                    )}
+                    disabled={statusUpdating || String(selected.status).toLowerCase() === s}
+                    onClick={() => handleStatusUpdate(selected.id, s)}
+                  >
+                    {s}
+                  </Button>
+                ))}
+              </div>
+              <CertificateViewer certificate={selected} variant="modal" />
+            </>
           ) : null}
         </DialogContent>
       </Dialog>

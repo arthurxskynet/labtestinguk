@@ -4,16 +4,16 @@ import { RevealOnView } from "@/components/marketing/reveal-on-view";
 import { StatTileAnimated } from "@/components/marketing/stat-tile-animated";
 
 const stats = [
-  { value: "2,500+", label: "Samples Analysed", icon: "⚗️" },
-  { value: "24hrs", label: "Priority Turnaround", icon: "⏱" },
-  { value: "99.9%", label: "QC Pass Rate", icon: "✓" },
-  { value: "UK Lab", label: "Chain of Custody", icon: "🔬" },
+  { value: "HPLC", label: "Purity reporting", icon: "⚗️" },
+  { value: "LC-MS", label: "Identity confirmation", icon: "🔬" },
+  { value: "QR", label: "Registry lookup", icon: "🔗" },
+  { value: "UK", label: "Sample coordination", icon: "📋" },
 ] as const;
 
 export function StatsBarSection() {
   return (
     <section
-      aria-label="Laboratory metrics"
+      aria-label="Analytical service capabilities"
       className="border-y border-[var(--bg-border)] bg-[var(--bg-surface)]"
     >
       <RevealOnView>

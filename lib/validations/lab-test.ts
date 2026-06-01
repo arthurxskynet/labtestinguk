@@ -19,6 +19,11 @@ export const labTestSchema = z
     endotoxin: z.boolean(),
     lcms_ppm: z.string().optional(),
     notes: z.string().optional(),
+    attestation_confirmed: z
+      .boolean()
+      .refine((val) => val === true, {
+        message: "You must confirm the attestation before submitting.",
+      }),
   })
   .superRefine((value, ctx) => {
     const hasSingle = value.target_purity_percent != null;

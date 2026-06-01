@@ -1,3 +1,4 @@
+import { OUTSOURCED_LAB_SUMMARY } from "@/lib/compliance/disclaimers";
 import { cn } from "@/lib/utils";
 
 type AmpoulabsNoteProps = {
@@ -12,8 +13,8 @@ export function AmpoulabsNote({ className }: AmpoulabsNoteProps) {
         className,
       )}
     >
-      <span className="font-semibold text-slate-900">Ampoulabs note:</span>{" "}
-      All listed tests belong to Ampoulabs.
+      <span className="font-semibold text-slate-900">Partner laboratory note:</span>{" "}
+      {OUTSOURCED_LAB_SUMMARY}
     </p>
   );
 }

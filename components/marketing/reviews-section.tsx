@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 
+import { TESTIMONIAL_DISCLAIMER } from "@/lib/compliance/disclaimers";
 import { RevealOnView } from "@/components/marketing/reveal-on-view";
 
 const testimonials = [
@@ -8,33 +9,33 @@ const testimonials = [
     name: "Dr. James Harrington",
     location: "London",
     quote:
-      "Certificate landed next working day. HPLC and LC-MS sections are laid out clearly for our batch files—we did not need to chase anyone for supplementary data.",
+      "Certificate arrived with HPLC and LC-MS sections laid out clearly for our batch files—we did not need to chase supplementary data.",
     featured: true,
   },
   {
     name: "Marcus Thompson",
     location: "Birmingham",
-    quote: "Sorted. QR opens the cert, figures match what we submitted. That's all I wanted.",
+    quote: "QR opens the certificate record; figures match what we submitted.",
     featured: false,
   },
   {
     name: "Sarah Patel",
     location: "Glasgow",
     quote:
-      "Third reference material order this year. Same layout each time—which is exactly what our internal review expects.",
+      "Consistent certificate layout across orders, which helps our internal documentation review.",
     featured: false,
   },
   {
     name: "Dr. Elena Voss",
     location: "Cambridge",
     quote:
-      "Annotated peaks made the handover to our documentation set much quicker than spreadsheets alone.",
+      "Annotated peak data made handover to our documentation set quicker than spreadsheets alone.",
     featured: false,
   },
   {
     name: "Ryan Brooks",
     location: "Bristol",
-    quote: "Straightforward for supplier verification.",
+    quote: "Straightforward for supplier documentation checks.",
     featured: false,
   },
 ] as const;
@@ -62,13 +63,13 @@ export function ReviewsSection() {
       <div className="relative marketing-container">
         <RevealOnView className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[var(--accent-primary)]">
-            Customer reviews
+            Client feedback
           </p>
           <h2 className="mt-3 font-display text-[clamp(1.8rem,4vw,3rem)] tracking-tight text-[var(--text-primary)]">
-            Trusted by UK labs &amp; researchers
+            Used by research documentation teams
           </h2>
           <p className="mt-4 text-lg text-[var(--text-secondary)]">
-            Research teams rely on repeatable documentation and verification
+            Comments from clients who use our testing documentation service
           </p>
         </RevealOnView>
 
@@ -109,14 +110,20 @@ export function ReviewsSection() {
           <MarqueeRow items={[...marqueeRight, ...marqueeRight]} dir="right" />
         </div>
 
-        <RevealOnView className="mt-14 text-center">
+        <RevealOnView className="mt-10">
+          <p className="mx-auto max-w-2xl text-center text-xs leading-relaxed text-[var(--text-muted)]">
+            {TESTIMONIAL_DISCLAIMER}
+          </p>
+        </RevealOnView>
+
+        <RevealOnView className="mt-8 text-center">
           <Link
             href="https://maps.google.com"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 text-sm font-medium text-[var(--accent-primary)] underline-offset-4 transition-colors hover:text-[var(--accent-hover)] hover:underline"
           >
-            Leave us a review on Google
+            Share feedback on Google
             <ExternalLink className="size-3.5 shrink-0 opacity-80" aria-hidden />
             <span className="sr-only"> (opens in a new tab)</span>
           </Link>
@@ -141,9 +148,6 @@ function MarqueeRow({
             key={`${t.name}-${i}`}
             className="w-[min(100%,320px)] shrink-0 rounded-[var(--radius-lg)] border border-[var(--bg-border)] bg-[var(--bg-surface)] p-5 shadow-[var(--shadow-card)]"
           >
-            <p className="text-xs text-[#f59e0b]" aria-label="5 out of 5 stars">
-              ★★★★★
-            </p>
             <p className="mt-3 text-sm leading-relaxed text-[var(--text-secondary)]">{t.quote}</p>
             <p className="mt-4 text-sm font-semibold text-[var(--text-primary)]">{t.name}</p>
             <p className="text-xs text-[var(--text-muted)]">{t.location}</p>

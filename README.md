@@ -16,6 +16,14 @@ Create `.env.local` in the project root:
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=your_publishable_key
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
+
+Contact form (server-only — never prefix with `NEXT_PUBLIC_`):
+
+```bash
+CONTACT_ENQUIRY_WEBHOOK_URL=https://YOUR_PEPTIDE_DOMAIN/api/webhooks/contact-enquiries
+CONTACT_ENQUIRY_WEBHOOK_TOKEN=your_bearer_token
 ```
 
 Optional (server-only, if you use service role scripts later):

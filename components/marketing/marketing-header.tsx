@@ -148,7 +148,7 @@ export function MarketingHeader() {
                 "hidden items-center justify-center rounded-[var(--radius-pill)] border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-[#0f172a] transition-colors duration-200 hover:border-[var(--accent-primary)] hover:text-[var(--accent-primary)] sm:inline-flex",
               )}
             >
-              Verify Certificate
+              Verify certificate
             </Link>
             <Link
               href="/login"
@@ -204,7 +204,7 @@ export function MarketingHeader() {
               className="animate-fade-in mt-4 rounded-[var(--radius-pill)] border border-slate-200 px-4 py-3 text-center text-base font-semibold text-[#0f172a]"
               onClick={() => setOpen(false)}
             >
-              Verify Certificate
+              Verify certificate
             </Link>
             <Link
               href="/login"

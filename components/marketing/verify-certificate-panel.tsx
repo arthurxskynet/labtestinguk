@@ -46,7 +46,7 @@ export function VerifyCertificatePanel({
         >
           <Loader2 className="size-10 animate-spin text-[var(--accent-primary)] motion-reduce:animate-none" />
           <span className="mt-3 text-sm font-medium text-[var(--text-secondary)]">
-            Opening verifier…
+            Opening lookup…
           </span>
         </div>
       ) : null}
@@ -72,7 +72,7 @@ export function VerifyCertificatePanel({
             <button
               type="button"
               className="absolute right-3 top-1/2 inline-flex size-10 -translate-y-1/2 items-center justify-center rounded-[var(--radius-sm)] border border-transparent text-[var(--text-secondary)] transition-colors hover:border-[var(--bg-border)] hover:bg-[var(--accent-subtle)] hover:text-[var(--accent-primary)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-primary)]"
-              aria-label="Verify by QR code — opens verification page"
+              aria-label="Lookup by QR code — opens certificate lookup page"
               onClick={() => router.push("/verify")}
             >
               <QrCode className="size-5" aria-hidden />
@@ -82,7 +82,7 @@ export function VerifyCertificatePanel({
             type="submit"
             className="btn-primary-motion inline-flex h-14 shrink-0 items-center justify-center rounded-[var(--radius-md)] bg-[var(--accent-primary)] px-8 text-base font-semibold text-[var(--text-inverse)] hover:bg-[var(--accent-hover)] sm:min-w-[140px]"
           >
-            Verify
+            Lookup
           </button>
         </div>
       </form>

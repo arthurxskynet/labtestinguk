@@ -11,13 +11,13 @@ import { StatsBarSection } from "@/components/marketing/stats-bar-section";
 import { VerifySection } from "@/components/marketing/verify-section";
 
 export const metadata: Metadata = {
-  title: "Peptide verification & testing",
+  title: "Peptide analytical testing & documentation",
   description:
-    "Independent UK laboratory HPLC and LC-MS verification with QR-linked digital certificates. Research-use documentation and secure Lab Portal.",
+    "Independent UK-coordinated HPLC and LC-MS testing with EU partner-lab capacity where required. QR-linked certificate registry lookup. Research-use documentation only.",
   openGraph: {
-    title: "Verifypeps — Peptide verification & testing",
+    title: "Verifypeps — Peptide analytical testing & documentation",
     description:
-      "HPLC purity, LC-MS identity, and tamper-aware certificate verification for research laboratories.",
+      "HPLC and LC-MS reporting with registry-linked certificates for research laboratories.",
   },
 };
 

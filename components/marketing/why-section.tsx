@@ -3,17 +3,17 @@ import { BadgeCheck, Globe2, Scale } from "lucide-react";
 const items = [
   {
     title: "Independent & Impartial",
-    body: "We don't sell peptides. No conflicts of interest — just objective, third-party analytical results you can trust.",
+    body: "We provide testing services only—no peptide sales. Results are reported for research documentation under agreed methods.",
     icon: Scale,
   },
   {
-    title: "UK-Based Testing",
-    body: "No shipping samples overseas. Our experienced UK laboratory partners mean faster turnaround and full chain of custody.",
+    title: "UK-coordinated testing",
+    body: "Sample intake and documentation are coordinated from the UK. Selected HPLC methods may be performed by qualified partner laboratories in the European Union.",
     icon: Globe2,
   },
   {
-    title: "QR-Verified Certificates",
-    body: "Every certificate carries a unique QR code. Anyone can instantly verify authenticity — no account needed.",
+    title: "Registry-linked certificates",
+    body: "Each certificate includes a unique QR code for public registry lookup—confirming record consistency at the time of lookup.",
     icon: BadgeCheck,
   },
 ];
@@ -27,8 +27,7 @@ export function WhySection() {
             Built for Researchers
           </h2>
           <p className="mt-4 text-lg text-slate-600">
-            Independent, transparent, and designed around what UK researchers
-            actually need
+            Independent, transparent documentation designed for research traceability
           </p>
         </div>
         <div className="mt-14 grid gap-8 md:grid-cols-3">

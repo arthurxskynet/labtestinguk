@@ -8,6 +8,11 @@ import { useFieldArray, useForm, type Resolver } from "react-hook-form";
 import { toast } from "sonner";
 
 import { createLabCertificate } from "@/lib/actions/certificates";
+import {
+  ENDOTOXIN_REQUEST_NOTE,
+  MANUAL_REGISTRY_ENTRY_DISCLAIMER,
+  PORTAL_ATTESTATION_LABEL,
+} from "@/lib/compliance/disclaimers";
 import { labTestSchema, type LabTestInput } from "@/lib/validations/lab-test";
 import { Button } from "@/components/ui/button";
 import {
@@ -41,6 +46,7 @@ export function NewTestForm() {
       endotoxin: false,
       lcms_ppm: "",
       notes: "",
+      attestation_confirmed: false,
     },
   });
   const isBlend = form.watch("is_blend");
@@ -332,9 +338,46 @@ export function NewTestForm() {
                 </FormLabel>
                 <FormDescription>
                   Appends <span className="font-mono">-ETX</span> to the
-                  certificate code for LAL-related tracking.
+                  certificate code for LAL-related tracking. {ENDOTOXIN_REQUEST_NOTE}
                 </FormDescription>
               </div>
+            </FormItem>
+          )}
+        />
+        <p className="rounded-xl border border-border bg-[var(--bg-surface)] px-3 py-2 text-xs leading-relaxed text-muted-foreground">
+          {MANUAL_REGISTRY_ENTRY_DISCLAIMER}
+        </p>
+        <FormField
+          control={form.control}
+          name="attestation_confirmed"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start gap-3 rounded-lg border border-border bg-[var(--bg-surface)] p-4">
+              <FormControl>
+                <input
+                  type="checkbox"
+                  className="mt-1 size-4 rounded border-border accent-[var(--accent-primary)]"
+                  checked={field.value}
+                  onChange={field.onChange}
+                />
+              </FormControl>
+              <div className="space-y-1">
+                <FormLabel className="!mt-0 font-medium">
+                  Submission attestation (required)
+                </FormLabel>
+                <FormDescription>{PORTAL_ATTESTATION_LABEL}</FormDescription>
+                <p className="text-xs text-muted-foreground">
+                  See{" "}
+                  <Link href="/research-use-only" className="text-[var(--accent-primary)] underline-offset-4 hover:underline">
+                    Research Use Only
+                  </Link>{" "}
+                  and{" "}
+                  <Link href="/lab-partner-disclosure" className="text-[var(--accent-primary)] underline-offset-4 hover:underline">
+                    laboratory partner disclosure
+                  </Link>
+                  .
+                </p>
+              </div>
+              <FormMessage />
             </FormItem>
           )}
         />

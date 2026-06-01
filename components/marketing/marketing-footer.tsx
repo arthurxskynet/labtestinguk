@@ -3,14 +3,14 @@
 import Link from "next/link";
 import { toast } from "sonner";
 
+import { LegalIdentityBlock } from "@/components/compliance/legal-identity-block";
 import { SiteLogo } from "@/components/branding/site-logo";
 import { Input } from "@/components/ui/input";
 
 const platform = [
   { href: "/#how-it-works", label: "How It Works" },
   { href: "/endotoxin-testing", label: "Endotoxin Testing" },
-  { href: "/", label: "For Peptide Sellers" },
-  { href: "/verify", label: "Verify Peptide Quality" },
+  { href: "/verify", label: "Certificate Lookup" },
   { href: "/login", label: "Sign In" },
 ];
 
@@ -23,7 +23,9 @@ const resources = [
 const legal = [
   { href: "/privacy", label: "Privacy Policy" },
   { href: "/terms", label: "Terms of Service" },
-  { href: "/verify", label: "Certificate Verification" },
+  { href: "/research-use-only", label: "Research Use Only" },
+  { href: "/lab-partner-disclosure", label: "Lab Partner Disclosure" },
+  { href: "/verify", label: "Certificate Lookup" },
 ];
 
 export function MarketingFooter() {
@@ -36,7 +38,7 @@ export function MarketingFooter() {
           <div className="max-w-md space-y-4">
             <SiteLogo size="sm" className="w-40" imageClassName="block opacity-95" />
             <p className="text-sm leading-relaxed text-[var(--text-secondary)]">
-              Independent peptide verification and laboratory testing documentation—built for research traceability and audit-ready records.
+              Independent peptide analytical testing and certificate documentation—built for research traceability and audit-ready records.
             </p>
           </div>
           <form
@@ -44,7 +46,7 @@ export function MarketingFooter() {
             onSubmit={(e) => {
               e.preventDefault();
               toast.success("Subscribed", {
-                description: "Thanks — we’ll only send verification and lab updates. (Demo)",
+                description: "Thanks — we’ll only send service and documentation updates. (Demo)",
               });
             }}
           >
@@ -121,16 +123,16 @@ export function MarketingFooter() {
           </div>
           <div>
             <p className="text-xs leading-relaxed text-[var(--text-muted)]">
-              Verifypeps provides independent analytical testing for research and verification purposes. Certificates report composition as received and do not constitute a safety assessment or fitness-for-purpose determination.
-            </p>
-            <p className="mt-4 text-xs text-[var(--text-muted)]">
-              Verifypeps — a trading name of Verifypeps Analytics Ltd (company no. placeholder).
+              Verifypeps provides independent analytical testing for research and verification purposes. Certificates report composition as received and do not constitute a safety assessment, medical advice, or fitness-for-purpose determination.
             </p>
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-[var(--bg-border)] pt-8 text-xs text-[var(--text-muted)] sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} Verifypeps</p>
+        <div className="mt-12 flex flex-col gap-4 border-t border-[var(--bg-border)] pt-8 text-xs text-[var(--text-muted)] sm:flex-row sm:items-end sm:justify-between">
+          <div className="flex flex-col gap-3">
+            <p>© {new Date().getFullYear()} Verifypeps</p>
+            <LegalIdentityBlock variant="subtle" showPolicyLinks={false} showVat={false} />
+          </div>
           <div className="flex flex-wrap gap-x-6 gap-y-2">
             <Link href="/privacy" className="transition-colors hover:text-[var(--accent-primary)]">
               Privacy
@@ -138,8 +140,11 @@ export function MarketingFooter() {
             <Link href="/terms" className="transition-colors hover:text-[var(--accent-primary)]">
               Terms
             </Link>
+            <Link href="/research-use-only" className="transition-colors hover:text-[var(--accent-primary)]">
+              Research use only
+            </Link>
             <Link href="/verify" className="transition-colors hover:text-[var(--accent-primary)]">
-              Verify Certificate
+              Certificate lookup
             </Link>
           </div>
         </div>

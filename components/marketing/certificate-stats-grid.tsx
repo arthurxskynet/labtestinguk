@@ -8,23 +8,23 @@ import { StatTileAnimated } from "@/components/marketing/stat-tile-animated";
 const stats = [
   {
     icon: Users,
-    stat: "2,500+",
-    label: "Samples analysed",
+    stat: "HPLC",
+    label: "Purity reporting",
   },
   {
     icon: Clock,
-    stat: "24hrs",
-    label: "Typical turnaround (priority)",
+    stat: "LC-MS",
+    label: "Identity confirmation",
   },
   {
     icon: LineChart,
-    stat: "99.9%",
-    label: "QC pass rate",
+    stat: "QR",
+    label: "Registry lookup",
   },
   {
     icon: FlaskConical,
-    stat: "UK lab",
-    label: "Chain of custody",
+    stat: "UK",
+    label: "Sample coordination",
   },
 ] as const;
 

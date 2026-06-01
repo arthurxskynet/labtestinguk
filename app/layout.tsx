@@ -40,16 +40,16 @@ export const metadata: Metadata = {
   },
   title: {
     default:
-      "Peptide Verification & Testing UK | HPLC & LC-MS Certificates | Verifypeps",
+      "Peptide Analytical Testing UK | HPLC & LC-MS Documentation | Verifypeps",
     template: "%s | Verifypeps",
   },
   description:
-    "HPLC purity and LC-MS identity testing with QR-verified digital certificates. Independent UK laboratory analysis you can trust.",
+    "HPLC and LC-MS analytical reporting with QR-linked certificate registry lookup. UK-coordinated service with EU partner-lab capacity for selected methods. Research-use documentation only.",
   openGraph: {
     title:
-      "Peptide Verification & Testing UK | HPLC & LC-MS Certificates | Verifypeps",
+      "Peptide Analytical Testing UK | HPLC & LC-MS Documentation | Verifypeps",
     description:
-      "Independent third-party verification with HPLC analysis, mass spectrometry, and QR-verified certificates.",
+      "Independent analytical testing with HPLC, LC-MS, and registry-linked certificates for research documentation.",
     url: "https://verifypeps.com",
     siteName: "Verifypeps",
     locale: "en_GB",

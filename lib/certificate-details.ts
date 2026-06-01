@@ -64,6 +64,8 @@ export type CertificateDetailsView = {
    * When set, verification page and PDF can embed the image when allowed.
    */
   batchImageUrl: string | null;
+  /** Origin of the registry record when explicitly stored. */
+  dataSource: "portal_submission" | "catalogue" | null;
 };
 
 function str(v: unknown): string | null {
@@ -184,6 +186,12 @@ export function parseCertificateDetails(
   const batchImageUrl =
     str(d.batch_image_url) ?? str(d.product_image_url);
 
+  const dataSourceRaw = str(d.data_source);
+  const dataSource: CertificateDetailsView["dataSource"] =
+    dataSourceRaw === "portal_submission" || dataSourceRaw === "catalogue"
+      ? dataSourceRaw
+      : null;
+
   return {
     batch: str(d.batch) ?? batchRef,
     batchRef,
@@ -204,6 +212,7 @@ export function parseCertificateDetails(
     componentAnalytes,
     componentPurity,
     batchImageUrl,
+    dataSource,
   };
 }
 

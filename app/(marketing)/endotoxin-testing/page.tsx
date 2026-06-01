@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { ResearchUseOnlyNotice } from "@/components/compliance/research-use-only-notice";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Endotoxin Testing",
   description:
-    "LAL-based bacterial endotoxin detection for peptides and research samples. Quantitative EU/mL results with QR-verified certificates.",
+    "LAL-based bacterial endotoxin detection for research peptide samples. Quantitative EU/mL reporting with registry-linked certificates.",
 };
 
 export default function EndotoxinTestingPage() {
@@ -19,13 +20,15 @@ export default function EndotoxinTestingPage() {
             Endotoxin testing
           </p>
           <h1 className="mt-4 text-4xl font-bold tracking-tight text-[#0f172a] sm:text-5xl">
-            LAL endotoxin testing for research peptides
+            LAL endotoxin testing for research samples
           </h1>
           <p className="mt-6 text-lg text-[#334155]">
-            LAL-based bacterial endotoxin detection. Separate sample required to
-            prevent cross-contamination. Quantitative EU/mL result with pass/fail
-            certification and QR-verified certificate.
+            LAL-based bacterial endotoxin detection for research materials. A
+            separate sample is required to reduce cross-contamination risk.
+            Results are reported as quantitative EU/mL with comparison to an
+            agreed specification where provided.
           </p>
+          <ResearchUseOnlyNotice className="mx-auto mt-6 max-w-2xl border-slate-200 bg-slate-50 text-slate-600" />
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               href="/#contact"
@@ -40,7 +43,7 @@ export default function EndotoxinTestingPage() {
                 "min-w-[200px] border-slate-200 bg-white shadow-sm",
               )}
             >
-              Verify a certificate
+              Lookup a certificate
             </Link>
           </div>
         </div>
@@ -51,11 +54,11 @@ export default function EndotoxinTestingPage() {
         <ul className="mt-6 space-y-3 text-[#334155]">
           <li className="flex gap-2">
             <span className="text-success-500">✓</span>
-            LAL kinetic turbidimetric assay
+            LAL kinetic turbidimetric assay (where selected for scope)
           </li>
           <li className="flex gap-2">
             <span className="text-success-500">✓</span>
-            Sensitivity: 0.005 EU/mL
+            Method sensitivity stated on the certificate for the run performed
           </li>
           <li className="flex gap-2">
             <span className="text-success-500">✓</span>
@@ -63,23 +66,30 @@ export default function EndotoxinTestingPage() {
           </li>
           <li className="flex gap-2">
             <span className="text-success-500">✓</span>
-            Pass/fail certification against your specification
+            Outcome vs client specification where an agreed limit is supplied
           </li>
           <li className="flex gap-2">
             <span className="text-success-500">✓</span>
-            QR-verified certificate
+            QR-linked registry certificate
           </li>
           <li className="flex gap-2">
             <span className="text-success-500">✓</span>
-            48–72h typical turnaround
+            Estimated turnaround communicated at order acceptance (typically several working days)
           </li>
         </ul>
         <p className="mt-10 text-sm text-[#334155]">
-          A peptide can test at high purity and still contain bacterial
-          endotoxin. LAL testing is the standard approach to detect these
-          heat-stable contaminants in research materials. Results are reported
-          for documentation and batch review — not as a clinical safety
-          assessment.
+          LAL testing detects bacterial endotoxin in research materials. Results
+          are reported for documentation and batch review — not as a clinical
+          safety assessment, release for human use, or regulatory approval.
+        </p>
+        <p className="mt-4 text-sm text-[#334155]">
+          Some endotoxin methods may be performed by qualified partner
+          laboratories, including facilities in the European Union where required.
+          See our{" "}
+          <Link href="/lab-partner-disclosure" className="text-brand-600 hover:underline">
+            laboratory partner disclosure
+          </Link>
+          .
         </p>
       </section>
     </div>

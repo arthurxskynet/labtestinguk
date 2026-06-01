@@ -114,4 +114,25 @@ describe("CertificateViewer", () => {
 
     expect(chartPeaks).toHaveLength(2);
   });
+
+  it("shows pending review banner and compliance footer for portal submissions", () => {
+    render(
+      <CertificateViewer
+        certificate={{
+          ...buildCertificate({
+            data_source: "portal_submission",
+          }),
+          status: "pending",
+        }}
+      />,
+    );
+
+    expect(screen.getByTestId("pending-review-banner")).not.toBeNull();
+    expect(
+      screen.getByLabelText("Certificate compliance notices"),
+    ).not.toBeNull();
+    expect(
+      screen.getByText(/Registry data reflects the record as entered/i),
+    ).not.toBeNull();
+  });
 });

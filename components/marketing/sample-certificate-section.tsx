@@ -25,8 +25,7 @@ export function SampleCertificateSection() {
             Professional Peptide Testing
           </h2>
           <p className="mt-4 text-lg text-slate-600">
-            Independent third-party verification with HPLC analysis, mass
-            spectrometry, and QR-verified certificates
+            Independent third-party analytical documentation with HPLC, LC-MS, and registry-linked certificates
           </p>
         </RevealOnView>
 
@@ -45,7 +44,7 @@ export function SampleCertificateSection() {
                       </CardDescription>
                     </div>
                     <Badge className="border-0 bg-success-500 text-white shadow-sm hover:bg-success-500">
-                      99.91% purity
+                      Illustrative
                     </Badge>
                   </div>
                 </CardHeader>

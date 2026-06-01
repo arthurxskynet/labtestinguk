@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 
+import { requireAdmin } from "@/lib/auth/require-admin";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { generateCertificateCode } from "@/lib/certificate-code";
 import {
@@ -10,9 +11,14 @@ import {
 } from "@/lib/certificate-details";
 import { normalizeBlendPeaksFromComponents } from "@/lib/chromatogram/peak-model";
 import { labTestSchema } from "@/lib/validations/lab-test";
+import type { CertificateStatus } from "@/types/certificate";
 
 export type CreateCertificateResult =
   | { ok: true; code: string }
+  | { ok: false; error: string };
+
+export type UpdateCertificateStatusResult =
+  | { ok: true }
   | { ok: false; error: string };
 
 function buildSyntheticPeaks(
@@ -80,7 +86,9 @@ export async function createLabCertificate(
         : null;
 
   const additional_tests: string[] = [];
-  if (v.endotoxin) additional_tests.push("Endotoxin (LAL) requested");
+  if (v.endotoxin) {
+    additional_tests.push("Endotoxin (LAL) requested — result recorded separately when returned");
+  }
 
   const details = {
     batch_ref: v.batch_reference,
@@ -92,6 +100,7 @@ export async function createLabCertificate(
     component_purity: componentPurity,
     component_analytes: componentPurity.map((entry) => entry.analyte),
     is_blend: isBlend,
+    data_source: "portal_submission" as const,
     chromatogram_profile: isBlend
       ? "blend"
       : (resolvedPurity ?? 0) >= 99.5
@@ -127,4 +136,34 @@ export async function createLabCertificate(
   }
 
   return { ok: false, error: "Could not allocate a unique certificate code." };
+}
+
+const ALLOWED_STATUS_UPDATES: CertificateStatus[] = [
+  "verified",
+  "pending",
+  "revoked",
+];
+
+export async function updateCertificateStatus(
+  id: string,
+  status: CertificateStatus,
+): Promise<UpdateCertificateStatusResult> {
+  if (!ALLOWED_STATUS_UPDATES.includes(status)) {
+    return { ok: false, error: "Invalid certificate status." };
+  }
+
+  const { supabase } = await requireAdmin();
+  const { error } = await supabase
+    .from("certificates")
+    .update({ status })
+    .eq("id", id);
+
+  if (error) {
+    return { ok: false, error: error.message };
+  }
+
+  revalidatePath("/admin");
+  revalidatePath("/admin/certificates");
+  revalidatePath("/dashboard/certificates");
+  return { ok: true };
 }

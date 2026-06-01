@@ -6,10 +6,13 @@ export function CtaBannerSection() {
       <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent-primary)]/90 via-[#008f84] to-[var(--accent-blue)]/90" aria-hidden />
       <div className="relative marketing-container text-center text-[var(--text-inverse)]">
         <h2 className="font-display text-[clamp(1.75rem,4vw,2.75rem)] tracking-tight">
-          Ready to verify?
+          Request analytical documentation
         </h2>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-white/90">
-          Join UK researchers using Verifypeps for independent testing documentation and certificate verification.
+          Submit samples through the Lab Portal for structured HPLC/LC-MS reporting and registry-linked certificates.
+        </p>
+        <p className="mx-auto mt-6 max-w-2xl text-sm text-white/85">
+          For laboratory research and analytical documentation only. Not for human or veterinary use.
         </p>
         <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link

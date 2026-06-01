@@ -86,10 +86,10 @@ export function CertificatePreview({ className }: { className?: string }) {
         <div className="mt-4 grid grid-cols-3 gap-2 text-center text-[11px] sm:text-xs">
           <div className="rounded-[var(--radius-sm)] bg-[var(--bg-surface)] px-2 py-2">
             <p className="font-mono font-semibold tabular-nums text-[var(--text-primary)]">
-              99.91%
+              Example
             </p>
             <p className="mt-0.5 text-[10px] uppercase tracking-wide text-[var(--text-muted)]">
-              Purity
+              Area %
             </p>
           </div>
           <div className="rounded-[var(--radius-sm)] bg-[var(--bg-surface)] px-2 py-2">

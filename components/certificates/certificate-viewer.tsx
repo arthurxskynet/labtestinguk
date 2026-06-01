@@ -9,7 +9,12 @@ import QRCode from "qrcode";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { buttonVariants } from "@/components/ui/button-variants";
-import { AmpoulabsNote } from "@/components/certificates/ampoulabs-note";
+import { CertificateComplianceFooter } from "@/components/compliance/certificate-compliance-footer";
+import {
+  ADDITIONAL_TESTS_SCOPE_NOTE,
+  CHROMATOGRAM_FALLBACK_NOTE,
+  getCertificateCompliancePdfLines,
+} from "@/lib/compliance/disclaimers";
 import {
   Card,
   CardContent,
@@ -478,6 +483,22 @@ export function CertificateViewer({
       doc.text(tamper, margin, y);
       y += tamper.length * 3.8 + 4;
 
+      const complianceLines = getCertificateCompliancePdfLines({
+        isPendingReview: certificate.status === "pending",
+        isPortalSubmission: detail.dataSource === "portal_submission",
+      });
+      for (const line of complianceLines) {
+        if (y > footerY - 14) {
+          doc.addPage();
+          y = 18;
+        }
+        doc.setFontSize(7);
+        doc.setTextColor(100, 116, 139);
+        const wrapped = doc.splitTextToSize(line, pageW - margin * 2);
+        doc.text(wrapped, margin, y);
+        y += wrapped.length * 3.2 + 2;
+      }
+
       doc.setTextColor(148, 163, 184);
       doc.text(
         "verifypeps.com · hello@verifypeps.com",
@@ -510,6 +531,16 @@ export function CertificateViewer({
       : "max-h-[85vh] overflow-y-auto px-4 py-6 sm:px-6";
 
   const isVerified = certificate.status === "verified";
+  const isPendingReview = certificate.status === "pending";
+  const isPortalSubmission = detail.dataSource === "portal_submission";
+
+  const chromatogramCardDescription = React.useMemo(() => {
+    let text = chromatogramDescription;
+    if (!strictPeakContractSatisfied) {
+      text += ` ${CHROMATOGRAM_FALLBACK_NOTE}`;
+    }
+    return text;
+  }, [chromatogramDescription, strictPeakContractSatisfied]);
 
   return (
     <div className={cn(containerClass, "animate-fade-in")}>
@@ -582,15 +613,29 @@ export function CertificateViewer({
         </div>
       </div>
 
+      {(isPendingReview || isPortalSubmission) && !isVerified ? (
+        <div
+          className="mt-6 rounded-2xl border border-amber-500/35 bg-amber-50/70 px-4 py-3 text-sm text-amber-950"
+          role="status"
+          data-testid="pending-review-banner"
+        >
+          <p className="font-semibold text-amber-900">Pending registry review</p>
+          <p className="mt-1 text-xs leading-relaxed text-amber-900/90">
+            This record has not been independently verified. Status will update when
+            registry review is complete.
+          </p>
+        </div>
+      ) : null}
+
       <Card className="lab-gradient-verified mt-8 rounded-2xl border border-success-500/20 shadow-sm">
         <CardHeader className="pb-2">
           <CardTitle className="text-base text-card-foreground">
-            Tamper-proof verification
+            Registry verification
           </CardTitle>
           <CardDescription className="text-muted-foreground">
             The QR code and verification URL resolve to this registry entry only.
             Printed or forwarded PDFs are informational; the online record is the
-            reference for authenticity checks.
+            authoritative reference for record matching at lookup.
           </CardDescription>
         </CardHeader>
       </Card>
@@ -793,8 +838,7 @@ export function CertificateViewer({
           <CardHeader>
             <CardTitle className="text-lg">Representative chromatogram</CardTitle>
             <CardDescription>
-              {chromatogramDescription}
-              {!strictPeakContractSatisfied ? " Spike data normalized for strict compound-count display." : ""}
+              {chromatogramCardDescription}
             </CardDescription>
           </CardHeader>
           <CardContent className="h-[280px] w-full min-h-[220px] pt-2">
@@ -926,6 +970,9 @@ export function CertificateViewer({
                 <li key={t}>{t}</li>
               ))}
             </ul>
+            <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+              {ADDITIONAL_TESTS_SCOPE_NOTE}
+            </p>
           </CardContent>
         </Card>
       ) : null}
@@ -977,12 +1024,11 @@ export function CertificateViewer({
         </Card>
       ) : null}
 
-      <AmpoulabsNote className="mt-8" />
-
-      <p className="mt-4 text-sm text-muted-foreground">
-        Reference data is provided for laboratory research traceability only.
-        It does not constitute a specification for clinical or human use.
-      </p>
+      <CertificateComplianceFooter
+        className="mt-8"
+        isPendingReview={isPendingReview}
+        isPortalSubmission={isPortalSubmission}
+      />
 
       {variant === "page" ? (
         <Link

@@ -5,6 +5,7 @@ import { z } from "zod";
 
 import { CertificateDetail } from "@/components/verify/certificate-detail";
 import { VerifyLookupHero } from "@/components/verify/verify-lookup-hero";
+import { VerificationDisclaimer } from "@/components/compliance/verification-disclaimer";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
@@ -16,9 +17,9 @@ type Props = {
 };
 
 export const metadata: Metadata = {
-  title: "Verify certificate",
+  title: "Certificate lookup",
   description:
-    "Enter a Verifypeps certificate ID or scan a QR code to view HPLC and LC-MS summary data for research traceability.",
+    "Enter a Verifypeps certificate ID or scan a QR code to view registry-linked HPLC and LC-MS summary data for research documentation.",
 };
 
 export default async function VerifyPage({ searchParams }: Props) {
@@ -112,6 +113,7 @@ export default async function VerifyPage({ searchParams }: Props) {
               Back home
             </Link>
           </div>
+          <VerificationDisclaimer className="mx-auto mt-10 max-w-xl text-left" />
         </div>
       </div>
     );
