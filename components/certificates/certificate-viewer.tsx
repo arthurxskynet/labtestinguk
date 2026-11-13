@@ -32,6 +32,12 @@ import {
 } from "@/components/ui/table";
 import { ChromatogramChart } from "@/components/verify/chromatogram-chart";
 import {
+  buildAnalyticalResultRows,
+  hasSystemSuitabilityScope,
+  SYSTEM_SUITABILITY_NOTE,
+  SYSTEM_SUITABILITY_ROWS,
+} from "@/lib/certificate-analytical-rows";
+import {
   isMixCertificate,
   parseCertificateDetails,
   sumPeakAreaPercent,
@@ -148,6 +154,37 @@ export function CertificateViewer({
       timeZone: "UTC",
     });
   }, [detail.testingDate]);
+
+  const analyticalResultRows = React.useMemo(
+    () => buildAnalyticalResultRows(certificate, detail, { mixCertificate }),
+    [certificate, detail, mixCertificate],
+  );
+  const showSystemSuitability = React.useMemo(
+    () => hasSystemSuitabilityScope(detail.additionalTests),
+    [detail.additionalTests],
+  );
+  const isSinglePrincipalPeak = displayPeaks.length === 1 && !mixCertificate;
+  const peakTableTitle = isSinglePrincipalPeak
+    ? "Principal peak integration"
+    : "Peak table";
+  const peakTableDescription = isSinglePrincipalPeak
+    ? "Principal analyte integration at the stated retention time."
+    : "Integrated peak summary; reported areas sum to the total integration window.";
+  const peakTotalLabel = isSinglePrincipalPeak
+    ? "Reported purity (area %)"
+    : "Total (integrated area %)";
+  const lcmsMassSummary = React.useMemo(() => {
+    if (certificate.lcms_ppm == null && certificate.molecular_weight == null) {
+      return null;
+    }
+    const ppm =
+      certificate.lcms_ppm != null ? `${Number(certificate.lcms_ppm)} ppm` : "—";
+    const mw =
+      certificate.molecular_weight != null
+        ? `${certificate.molecular_weight} Da expected`
+        : "Mass match";
+    return `Observed vs expected: ${mw}; Δ ${ppm}`;
+  }, [certificate.lcms_ppm, certificate.molecular_weight]);
 
   /** Same URL string used for on-screen QR and PDF (single source of truth). */
   const verifyPageUrl = React.useMemo(
@@ -304,6 +341,35 @@ export function CertificateViewer({
         y += Math.max(6, lines.length * 5);
       }
 
+      if (analyticalResultRows.length > 0) {
+        y += 4;
+        if (y > 240) {
+          doc.addPage();
+          y = 18;
+        }
+        doc.setFontSize(10);
+        doc.setTextColor(15, 118, 110);
+        doc.text("Analytical results", margin, y);
+        y += 6;
+        doc.setFontSize(8);
+        doc.setTextColor(100, 116, 139);
+        doc.text("Test", margin, y);
+        doc.text("Spec", margin + 52, y);
+        doc.text("Result", margin + 82, y);
+        y += 5;
+        doc.setTextColor(15, 23, 42);
+        for (const row of analyticalResultRows) {
+          if (y > 285) {
+            doc.addPage();
+            y = 18;
+          }
+          doc.text(doc.splitTextToSize(row.test, 48), margin, y);
+          doc.text(doc.splitTextToSize(row.specification, 26), margin + 52, y);
+          doc.text(doc.splitTextToSize(row.result, 48), margin + 82, y);
+          y += 6;
+        }
+      }
+
       if (batchImageDataUrl) {
         const maxImgW = pageW - margin * 2;
         const maxImgH = 95;
@@ -430,6 +496,36 @@ export function CertificateViewer({
         }
       }
 
+      if (showSystemSuitability) {
+        y += 4;
+        if (y > 230) {
+          doc.addPage();
+          y = 18;
+        }
+        doc.setFontSize(10);
+        doc.setTextColor(15, 118, 110);
+        doc.text("Method qualification (representative)", margin, y);
+        y += 6;
+        doc.setFontSize(8);
+        doc.setTextColor(100, 116, 139);
+        doc.text("Criterion", margin, y);
+        doc.text("Specification", margin + 70, y);
+        doc.text("Status", margin + 130, y);
+        y += 5;
+        doc.setTextColor(15, 23, 42);
+        for (const row of SYSTEM_SUITABILITY_ROWS) {
+          if (y > 285) {
+            doc.addPage();
+            y = 18;
+          }
+          doc.text(row.criterion, margin, y);
+          doc.text(row.specification, margin + 70, y);
+          doc.text(row.status, margin + 130, y);
+          y += 5;
+        }
+        y += 2;
+      }
+
       if (displayPeaks.length > 0) {
         y += 4;
         if (y > 230) {
@@ -438,7 +534,7 @@ export function CertificateViewer({
         }
         doc.setFontSize(10);
         doc.setTextColor(15, 118, 110);
-        doc.text("Peak table", margin, y);
+        doc.text(peakTableTitle, margin, y);
         y += 7;
         doc.setFontSize(8);
         doc.setTextColor(100, 116, 139);
@@ -460,7 +556,7 @@ export function CertificateViewer({
         }
         doc.setFontSize(8);
         doc.setTextColor(100, 116, 139);
-        doc.text("Total (integrated area %)", margin, y);
+        doc.text(peakTotalLabel, margin, y);
         doc.setTextColor(15, 23, 42);
         doc.text(totalPct.toFixed(2), margin + 110, y);
         y += 7;
@@ -641,7 +737,10 @@ export function CertificateViewer({
       </Card>
 
       <div
-        className="mt-6 hidden min-w-0 gap-3 rounded-2xl border border-border bg-[var(--bg-elevated)] p-4 shadow-sm lg:grid lg:grid-cols-4"
+        className={cn(
+          "mt-6 hidden min-w-0 gap-3 rounded-2xl border border-border bg-[var(--bg-elevated)] p-4 shadow-sm lg:grid",
+          testingDateDisplay ? "lg:grid-cols-5" : "lg:grid-cols-4",
+        )}
         aria-label="Registry summary"
       >
         <div className="min-w-0 rounded-xl border border-border bg-card px-3 py-2.5 text-center shadow-sm">
@@ -678,7 +777,54 @@ export function CertificateViewer({
             {detail.internalRegistryId ?? "—"}
           </p>
         </div>
+        {testingDateDisplay ? (
+          <div className="min-w-0 rounded-xl border border-border bg-card px-3 py-2.5 text-center shadow-sm">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              Testing date
+            </p>
+            <p className="mt-1 text-sm font-semibold text-foreground tabular-nums">
+              {testingDateDisplay}
+            </p>
+          </div>
+        ) : null}
       </div>
+
+      <Card className="mt-6 rounded-2xl border-border bg-card shadow-sm">
+        <CardHeader>
+          <CardTitle className="text-lg">Analytical results</CardTitle>
+          <CardDescription>
+            Specification vs recorded outcome for this batch reference.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="min-w-0 overflow-x-auto">
+          <Table className="min-w-[520px]">
+            <TableHeader>
+              <TableRow>
+                <TableHead>Test</TableHead>
+                <TableHead>Specification</TableHead>
+                <TableHead>Result</TableHead>
+                <TableHead className="hidden sm:table-cell">Method</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {analyticalResultRows.map((row) => (
+                <TableRow key={row.test}>
+                  <TableCell className="font-medium">{row.test}</TableCell>
+                  <TableCell className="text-sm text-muted-foreground">
+                    {row.specification}
+                  </TableCell>
+                  <TableCell className="font-mono text-sm tabular-nums">
+                    {row.result}
+                  </TableCell>
+                  <TableCell className="hidden max-w-[12rem] whitespace-normal break-words text-sm text-muted-foreground sm:table-cell">
+                    {row.method}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
 
       <div className="mt-8 grid min-w-0 gap-6 lg:grid-cols-5">
         <Card className="min-w-0 rounded-2xl border-border bg-card shadow-sm lg:col-span-2">
@@ -742,6 +888,16 @@ export function CertificateViewer({
                     {certificate.lcms_ppm != null ? certificate.lcms_ppm : "—"}
                   </TableCell>
                 </TableRow>
+                {lcmsMassSummary ? (
+                  <TableRow>
+                    <TableCell className="align-top text-muted-foreground">
+                      LC-MS mass match
+                    </TableCell>
+                    <TableCell className="max-w-0 whitespace-normal break-words text-right align-top text-sm tabular-nums">
+                      {lcmsMassSummary}
+                    </TableCell>
+                  </TableRow>
+                ) : null}
                 <TableRow className="lg:hidden">
                   <TableCell className="text-muted-foreground">
                     Batch / reference
@@ -977,14 +1133,49 @@ export function CertificateViewer({
         </Card>
       ) : null}
 
+      {showSystemSuitability ? (
+        <Card className="mt-6 rounded-2xl border-border shadow-sm">
+          <CardHeader>
+            <CardTitle className="text-lg">Method qualification (representative)</CardTitle>
+            <CardDescription>
+              System suitability criteria for the validated HPLC workflow.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="min-w-0">
+            <Table className="min-w-[320px]">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Criterion</TableHead>
+                  <TableHead>Specification</TableHead>
+                  <TableHead className="text-right">Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {SYSTEM_SUITABILITY_ROWS.map((row) => (
+                  <TableRow key={row.criterion}>
+                    <TableCell>{row.criterion}</TableCell>
+                    <TableCell className="font-mono text-sm tabular-nums">
+                      {row.specification}
+                    </TableCell>
+                    <TableCell className="text-right text-sm font-medium text-success-600">
+                      {row.status}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+              {SYSTEM_SUITABILITY_NOTE}
+            </p>
+          </CardContent>
+        </Card>
+      ) : null}
+
       {displayPeaks.length > 0 ? (
         <Card className="mt-6 rounded-2xl border-border shadow-sm">
           <CardHeader>
-            <CardTitle className="text-lg">Peak table</CardTitle>
-            <CardDescription>
-              Integrated peak summary; reported areas sum to the total integration
-              window.
-            </CardDescription>
+            <CardTitle className="text-lg">{peakTableTitle}</CardTitle>
+            <CardDescription>{peakTableDescription}</CardDescription>
           </CardHeader>
           <CardContent className="min-w-0">
             <Table className="min-w-[280px]">
@@ -1012,7 +1203,7 @@ export function CertificateViewer({
                     colSpan={2}
                     className="text-sm font-medium text-muted-foreground"
                   >
-                    Total (integrated area %)
+                    {peakTotalLabel}
                   </TableCell>
                   <TableCell className="text-right font-mono text-sm font-semibold tabular-nums text-foreground">
                     {peakAreaTotal.toFixed(2)}

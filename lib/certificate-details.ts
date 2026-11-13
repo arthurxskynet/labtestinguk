@@ -11,7 +11,7 @@ export type ComponentPurityDetail = {
 };
 
 export const MIN_REALISTIC_PURITY = 99.11;
-export const MAX_REALISTIC_PURITY = 99.86;
+export const MAX_REALISTIC_PURITY = 99.92;
 
 export function sumPeakAreaPercent(peaks: PeakDetail[]): number {
   return peaks.reduce((sum, p) => sum + p.area_pct, 0);

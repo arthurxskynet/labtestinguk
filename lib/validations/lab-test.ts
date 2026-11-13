@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const componentPuritySchema = z.object({
   analyte: z.string().trim().min(1, "Analyte name is required"),
-  purity_percent: z.coerce.number().min(99.11).max(99.86),
+  purity_percent: z.coerce.number().min(99.11).max(99.92),
   rt: z.coerce.number().positive().optional(),
   notes: z.string().optional(),
 });
@@ -12,7 +12,7 @@ export const labTestSchema = z
     peptide_name: z.string().trim().min(1, "Peptide name is required"),
     batch_reference: z.string().trim().min(1, "Batch / reference is required"),
     is_blend: z.boolean().default(false),
-    target_purity_percent: z.coerce.number().min(99.11).max(99.86).optional(),
+    target_purity_percent: z.coerce.number().min(99.11).max(99.92).optional(),
     component_purity: z.array(componentPuritySchema).optional(),
     molecular_weight: z.coerce.number().positive().nullable().optional(),
     hplc_lcms_notes: z.string().trim().min(1, "Add HPLC / LC-MS notes"),

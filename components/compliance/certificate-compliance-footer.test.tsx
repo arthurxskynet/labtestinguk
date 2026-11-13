@@ -5,6 +5,7 @@ import {
   MANUAL_REGISTRY_ENTRY_DISCLAIMER,
   OUTSOURCED_TEST_ROUTING_NOTE,
   PENDING_REGISTRY_REVIEW_NOTE,
+  REGISTRY_QA_ATTESTATION,
   RESEARCH_USE_ONLY_SHORT,
   VERIFICATION_REGISTRY_DISCLAIMER,
 } from "@/lib/compliance/disclaimers";
@@ -15,6 +16,7 @@ describe("CertificateComplianceFooter", () => {
   it("renders the full compliance disclaimer stack", () => {
     render(<CertificateComplianceFooter />);
 
+    expect(screen.getByText(REGISTRY_QA_ATTESTATION)).not.toBeNull();
     expect(screen.getByText(MANUAL_REGISTRY_ENTRY_DISCLAIMER)).not.toBeNull();
     expect(screen.getByText(OUTSOURCED_TEST_ROUTING_NOTE)).not.toBeNull();
     expect(screen.getByText(VERIFICATION_REGISTRY_DISCLAIMER)).not.toBeNull();

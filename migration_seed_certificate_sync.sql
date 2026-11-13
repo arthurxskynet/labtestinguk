@@ -21,14 +21,15 @@ set
     'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
     'method', 'Water / acetonitrile + 0.1% TFA, gradient',
     'detection', 'UV 214 nm',
+    'testing_date', '2026-04-20',
+    'data_source', 'catalogue',
     'chromatogram_profile', 'high_purity',
     'notes', 'Research reference material — chain-of-custody retained per lab SOP.',
     'show_product_placeholder', true,
     'placeholder_caption', 'Laboratory archive photograph not attached to this registry entry.',
     'additional_tests', jsonb_build_array('LC-MS identity', 'System suitability'),
     'peaks', jsonb_build_array(
-      jsonb_build_object('name', 'BPC-157', 'rt', 4.23, 'area_pct', 99.86),
-      jsonb_build_object('name', 'Baseline', 'rt', 2.10, 'area_pct', 0.09)
+      jsonb_build_object('name', 'BPC-157', 'rt', 4.23, 'area_pct', 99.86)
     )
   )
 where
@@ -45,15 +46,15 @@ set
     'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
     'method', 'Water / acetonitrile + 0.1% TFA, gradient',
     'detection', 'UV 214 nm',
+    'testing_date', '2026-04-21',
+    'data_source', 'catalogue',
     'chromatogram_profile', 'high_purity',
     'notes', 'Research reference material — chain-of-custody retained per lab SOP.',
     'show_product_placeholder', true,
     'placeholder_caption', 'Laboratory archive photograph not attached to this registry entry.',
     'additional_tests', jsonb_build_array('LC-MS identity', 'System suitability'),
     'peaks', jsonb_build_array(
-      jsonb_build_object('name', 'TB-500 (fragment)', 'rt', 4.08, 'area_pct', 99.65),
-      jsonb_build_object('name', 'Aggregate shoulder', 'rt', 3.22, 'area_pct', 0.20),
-      jsonb_build_object('name', 'Late eluent', 'rt', 5.91, 'area_pct', 0.15)
+      jsonb_build_object('name', 'TB-500 (fragment)', 'rt', 4.08, 'area_pct', 99.65)
     )
   )
 where
@@ -70,15 +71,15 @@ set
     'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
     'method', 'Water / acetonitrile + 0.1% TFA, gradient',
     'detection', 'UV 214 nm',
-    'chromatogram_profile', 'blend',
+    'testing_date', '2026-04-22',
+    'data_source', 'catalogue',
+    'chromatogram_profile', 'default',
     'notes', 'Research reference material — chain-of-custody retained per lab SOP.',
     'show_product_placeholder', true,
     'placeholder_caption', 'Laboratory archive photograph not attached to this registry entry.',
     'additional_tests', jsonb_build_array('LC-MS identity', 'System suitability'),
     'peaks', jsonb_build_array(
-      jsonb_build_object('name', 'GHK-Cu', 'rt', 3.76, 'area_pct', 99.42),
-      jsonb_build_object('name', 'Polar trace', 'rt', 2.44, 'area_pct', 0.33),
-      jsonb_build_object('name', 'Baseline', 'rt', 5.18, 'area_pct', 0.25)
+      jsonb_build_object('name', 'GHK-Cu', 'rt', 3.76, 'area_pct', 99.42)
     )
   )
 where
@@ -96,15 +97,15 @@ set
     'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
     'method', 'Water / acetonitrile + 0.1% TFA, gradient',
     'detection', 'UV 214 nm',
+    'testing_date', '2026-02-13',
+    'data_source', 'catalogue',
     'chromatogram_profile', 'high_purity',
     'notes', 'Pending final review — research reference material; chain-of-custody retained per lab SOP.',
     'show_product_placeholder', true,
     'placeholder_caption', 'Laboratory archive photograph not attached to this registry entry.',
     'additional_tests', jsonb_build_array('LC-MS identity', 'System suitability'),
     'peaks', jsonb_build_array(
-      jsonb_build_object('name', 'Ipamorelin', 'rt', 4.12, 'area_pct', 99.78),
-      jsonb_build_object('name', 'Early system peak', 'rt', 2.05, 'area_pct', 0.12),
-      jsonb_build_object('name', 'Late eluent', 'rt', 6.33, 'area_pct', 0.10)
+      jsonb_build_object('name', 'Ipamorelin', 'rt', 4.12, 'area_pct', 99.78)
     )
   )
 where
@@ -142,15 +143,15 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
-      'chromatogram_profile', 'blend',
+      'testing_date', '2026-02-05',
+      'data_source', 'catalogue',
+      'chromatogram_profile', 'default',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP. Pack size variants recorded under internal SKU only.',
       'show_product_placeholder', true,
       'placeholder_caption', 'Laboratory archive photograph not attached to this registry entry.',
       'additional_tests', jsonb_build_array('Appearance', 'Particulate observation (visual)'),
       'peaks', jsonb_build_array(
-        jsonb_build_object('name', 'Benzyl alcohol', 'rt', 3.12, 'area_pct', 99.42),
-        jsonb_build_object('name', 'Early system peak', 'rt', 1.88, 'area_pct', 0.35),
-        jsonb_build_object('name', 'Baseline artefact', 'rt', 5.41, 'area_pct', 0.23)
+        jsonb_build_object('name', 'Benzyl alcohol', 'rt', 3.12, 'area_pct', 99.42)
       )
     )
   ),
@@ -170,15 +171,15 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
-      'chromatogram_profile', 'blend',
+      'testing_date', '2026-03-03',
+      'data_source', 'catalogue',
+      'chromatogram_profile', 'high_purity',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP. Mass recorded as monoisotopic convention for the stated salt form.',
       'show_product_placeholder', true,
       'placeholder_caption', 'Laboratory archive photograph not attached to this registry entry.',
       'additional_tests', jsonb_build_array('LC-MS identity', 'System suitability'),
       'peaks', jsonb_build_array(
-        jsonb_build_object('name', 'Melanotan II', 'rt', 4.31, 'area_pct', 99.74),
-        jsonb_build_object('name', 'Polar impurity', 'rt', 2.45, 'area_pct', 0.14),
-        jsonb_build_object('name', 'Late eluent', 'rt', 6.02, 'area_pct', 0.12)
+        jsonb_build_object('name', 'Melanotan II', 'rt', 4.31, 'area_pct', 99.74)
       )
     )
   ),
@@ -198,6 +199,8 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
+      'testing_date', '2026-03-13',
+      'data_source', 'catalogue',
       'chromatogram_profile', 'default',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP. Line comprises multiple named analytes; see recorded components.',
       'show_product_placeholder', true,
@@ -236,14 +239,15 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
+      'testing_date', '2026-04-16',
+      'data_source', 'catalogue',
       'chromatogram_profile', 'high_purity',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP. Pack sizes supplied under discrete internal SKUs.',
       'show_product_placeholder', true,
       'placeholder_caption', 'Laboratory archive photograph not attached to this registry entry.',
       'additional_tests', jsonb_build_array('LC-MS identity', 'System suitability'),
       'peaks', jsonb_build_array(
-        jsonb_build_object('name', 'Retatrutide', 'rt', 4.56, 'area_pct', 99.86),
-        jsonb_build_object('name', 'Baseline', 'rt', 2.22, 'area_pct', 0.14)
+        jsonb_build_object('name', 'Retatrutide', 'rt', 4.56, 'area_pct', 99.86)
       )
     )
   ),
@@ -263,15 +267,15 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
+      'testing_date', '2026-01-26',
+      'data_source', 'catalogue',
       'chromatogram_profile', 'high_purity',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP.',
       'show_product_placeholder', true,
       'placeholder_caption', 'Laboratory archive photograph not attached to this registry entry.',
       'additional_tests', jsonb_build_array('LC-MS identity', 'Optical characterisation (where applicable)'),
       'peaks', jsonb_build_array(
-        jsonb_build_object('name', 'NAD+', 'rt', 3.67, 'area_pct', 99.58),
-        jsonb_build_object('name', 'ADP-ribose trace', 'rt', 2.94, 'area_pct', 0.28),
-        jsonb_build_object('name', 'System', 'rt', 5.88, 'area_pct', 0.14)
+        jsonb_build_object('name', 'NAD+', 'rt', 3.67, 'area_pct', 99.58)
       )
     )
   ),
@@ -291,15 +295,15 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
+      'testing_date', '2026-03-20',
+      'data_source', 'catalogue',
       'chromatogram_profile', 'default',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP.',
       'show_product_placeholder', true,
       'placeholder_caption', 'Laboratory archive photograph not attached to this registry entry.',
       'additional_tests', jsonb_build_array('LC-MS identity', 'System suitability'),
       'peaks', jsonb_build_array(
-        jsonb_build_object('name', 'Tesamorelin', 'rt', 4.44, 'area_pct', 99.11),
-        jsonb_build_object('name', 'Deamidation shoulder', 'rt', 3.71, 'area_pct', 0.52),
-        jsonb_build_object('name', 'Late eluent', 'rt', 6.15, 'area_pct', 0.37)
+        jsonb_build_object('name', 'Tesamorelin', 'rt', 4.44, 'area_pct', 99.11)
       )
     )
   ),
@@ -319,15 +323,15 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
+      'testing_date', '2026-03-25',
+      'data_source', 'catalogue',
       'chromatogram_profile', 'default',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP. Pack sizes supplied under discrete internal SKUs.',
       'show_product_placeholder', true,
       'placeholder_caption', 'Laboratory archive photograph not attached to this registry entry.',
       'additional_tests', jsonb_build_array('LC-MS identity', 'System suitability'),
       'peaks', jsonb_build_array(
-        jsonb_build_object('name', 'GHK-Cu', 'rt', 3.89, 'area_pct', 99.35),
-        jsonb_build_object('name', 'Polar trace', 'rt', 2.31, 'area_pct', 0.38),
-        jsonb_build_object('name', 'Baseline', 'rt', 5.62, 'area_pct', 0.27)
+        jsonb_build_object('name', 'GHK-Cu', 'rt', 3.89, 'area_pct', 99.35)
       )
     )
   )
@@ -342,40 +346,6 @@ set
   details = excluded.details
 where
   certificates.user_id is null;
-
--- ---------------------------------------------------------------------------
--- Backfill testing date (weekday only, deterministic pseudo-random by code)
--- Range: 2026-01-18 .. 2026-04-22 (Mon-Fri only)
--- ---------------------------------------------------------------------------
-
-with weekday_pool as (
-  select
-    d::date as dt,
-    row_number() over (order by d) - 1 as idx
-  from generate_series(date '2026-01-18', date '2026-04-22', interval '1 day') as gs(d)
-  where extract(isodow from d) between 1 and 5
-),
-pool_meta as (
-  select count(*)::int as n
-  from weekday_pool
-),
-targets as (
-  select
-    c.id,
-    (('x' || substr(md5(c.code), 1, 8))::bit(32)::int & 2147483647) as seed
-  from public.certificates c
-)
-update public.certificates c
-set details = jsonb_set(
-  coalesce(c.details, '{}'::jsonb),
-  '{testing_date}',
-  to_jsonb(to_char(w.dt, 'YYYY-MM-DD')),
-  true
-)
-from targets t
-cross join pool_meta m
-join weekday_pool w on w.idx = (t.seed % m.n)
-where c.id = t.id;
 
 -- ---------------------------------------------------------------------------
 -- Expansion pack — twelve catalogue rows (same payloads as seed.sql)
@@ -411,6 +381,8 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
+      'testing_date', '2026-03-02',
+      'data_source', 'catalogue',
       'chromatogram_profile', 'default',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP. Blend line; MW reported per-component where applicable.',
       'show_product_placeholder', true,
@@ -446,6 +418,8 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
+      'testing_date', '2026-02-18',
+      'data_source', 'catalogue',
       'chromatogram_profile', 'high_purity',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP. Blend line.',
       'show_product_placeholder', true,
@@ -481,15 +455,15 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
+      'testing_date', '2026-03-02',
+      'data_source', 'catalogue',
       'chromatogram_profile', 'high_purity',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP. Mass convention: monoisotopic for stated salt form.',
       'show_product_placeholder', true,
       'placeholder_caption', 'Batch photograph slot—upload via registry when available.',
       'additional_tests', jsonb_build_array('LC-MS identity', 'System suitability'),
       'peaks', jsonb_build_array(
-        jsonb_build_object('name', 'PT-141', 'rt', 4.47, 'area_pct', 99.86),
-        jsonb_build_object('name', 'Polar trace', 'rt', 2.61, 'area_pct', 0.09),
-        jsonb_build_object('name', 'Baseline', 'rt', 5.94, 'area_pct', 0.05)
+        jsonb_build_object('name', 'PT-141', 'rt', 4.47, 'area_pct', 99.86)
       )
     )
   ),
@@ -509,15 +483,15 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
+      'testing_date', '2026-01-30',
+      'data_source', 'catalogue',
       'chromatogram_profile', 'default',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP.',
       'show_product_placeholder', true,
       'placeholder_caption', 'Batch photograph slot—upload via registry when available.',
       'additional_tests', jsonb_build_array('LC-MS identity', 'System suitability'),
       'peaks', jsonb_build_array(
-        jsonb_build_object('name', 'MOTS-C', 'rt', 3.94, 'area_pct', 99.23),
-        jsonb_build_object('name', 'Early system peak', 'rt', 2.18, 'area_pct', 0.45),
-        jsonb_build_object('name', 'Late eluent', 'rt', 6.41, 'area_pct', 0.32)
+        jsonb_build_object('name', 'MOTS-C', 'rt', 3.94, 'area_pct', 99.23)
       )
     )
   ),
@@ -537,15 +511,15 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
+      'testing_date', '2026-03-02',
+      'data_source', 'catalogue',
       'chromatogram_profile', 'high_purity',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP. Glycoform heterogeneity expected; MW not quoted as single value.',
       'show_product_placeholder', true,
       'placeholder_caption', 'Batch photograph slot—upload via registry when available.',
       'additional_tests', jsonb_build_array('Identity check (reference method)', 'System suitability'),
       'peaks', jsonb_build_array(
-        jsonb_build_object('name', 'Major envelope', 'rt', 4.02, 'area_pct', 99.62),
-        jsonb_build_object('name', 'Glyco shoulder', 'rt', 3.35, 'area_pct', 0.22),
-        jsonb_build_object('name', 'Late fraction', 'rt', 5.78, 'area_pct', 0.16)
+        jsonb_build_object('name', 'HCG (reference material)', 'rt', 4.02, 'area_pct', 99.62)
       )
     )
   ),
@@ -565,15 +539,15 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
+      'testing_date', '2026-04-02',
+      'data_source', 'catalogue',
       'chromatogram_profile', 'default',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP.',
       'show_product_placeholder', true,
       'placeholder_caption', 'Batch photograph slot—upload via registry when available.',
       'additional_tests', jsonb_build_array('LC-MS identity', 'System suitability'),
       'peaks', jsonb_build_array(
-        jsonb_build_object('name', 'Ipamorelin', 'rt', 4.14, 'area_pct', 99.34),
-        jsonb_build_object('name', 'Deamidation trace', 'rt', 3.52, 'area_pct', 0.41),
-        jsonb_build_object('name', 'Baseline', 'rt', 6.02, 'area_pct', 0.25)
+        jsonb_build_object('name', 'Ipamorelin', 'rt', 4.14, 'area_pct', 99.34)
       )
     )
   ),
@@ -593,15 +567,15 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
+      'testing_date', '2026-03-27',
+      'data_source', 'catalogue',
       'chromatogram_profile', 'high_purity',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP.',
       'show_product_placeholder', true,
       'placeholder_caption', 'Batch photograph slot—upload via registry when available.',
       'additional_tests', jsonb_build_array('LC-MS identity', 'System suitability'),
       'peaks', jsonb_build_array(
-        jsonb_build_object('name', 'DSIP', 'rt', 3.81, 'area_pct', 99.60),
-        jsonb_build_object('name', 'Polar impurity', 'rt', 2.44, 'area_pct', 0.22),
-        jsonb_build_object('name', 'Late eluent', 'rt', 5.67, 'area_pct', 0.18)
+        jsonb_build_object('name', 'DSIP', 'rt', 3.81, 'area_pct', 99.60)
       )
     )
   ),
@@ -621,15 +595,15 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
+      'testing_date', '2026-01-20',
+      'data_source', 'catalogue',
       'chromatogram_profile', 'default',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP.',
       'show_product_placeholder', true,
       'placeholder_caption', 'Batch photograph slot—upload via registry when available.',
       'additional_tests', jsonb_build_array('LC-MS identity', 'System suitability'),
       'peaks', jsonb_build_array(
-        jsonb_build_object('name', 'GHRP-6', 'rt', 4.06, 'area_pct', 99.41),
-        jsonb_build_object('name', 'Aggregate trace', 'rt', 3.18, 'area_pct', 0.35),
-        jsonb_build_object('name', 'Baseline', 'rt', 6.22, 'area_pct', 0.24)
+        jsonb_build_object('name', 'GHRP-6', 'rt', 4.06, 'area_pct', 99.41)
       )
     )
   ),
@@ -649,15 +623,15 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
+      'testing_date', '2026-01-29',
+      'data_source', 'catalogue',
       'chromatogram_profile', 'high_purity',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP. Identity as reduced glutathione (reference).',
       'show_product_placeholder', true,
       'placeholder_caption', 'Batch photograph slot—upload via registry when available.',
       'additional_tests', jsonb_build_array('LC-MS identity', 'Identity by retention'),
       'peaks', jsonb_build_array(
-        jsonb_build_object('name', 'Glutathione', 'rt', 2.76, 'area_pct', 99.72),
-        jsonb_build_object('name', 'Polar trace', 'rt', 1.92, 'area_pct', 0.18),
-        jsonb_build_object('name', 'System', 'rt', 4.55, 'area_pct', 0.10)
+        jsonb_build_object('name', 'Glutathione', 'rt', 2.76, 'area_pct', 99.72)
       )
     )
   ),
@@ -677,15 +651,15 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
+      'testing_date', '2026-04-17',
+      'data_source', 'catalogue',
       'chromatogram_profile', 'default',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP.',
       'show_product_placeholder', true,
       'placeholder_caption', 'Batch photograph slot—upload via registry when available.',
       'additional_tests', jsonb_build_array('LC-MS identity', 'System suitability'),
       'peaks', jsonb_build_array(
-        jsonb_build_object('name', 'KPV', 'rt', 3.28, 'area_pct', 99.19),
-        jsonb_build_object('name', 'Early peak', 'rt', 2.05, 'area_pct', 0.52),
-        jsonb_build_object('name', 'Late eluent', 'rt', 5.44, 'area_pct', 0.29)
+        jsonb_build_object('name', 'KPV', 'rt', 3.28, 'area_pct', 99.19)
       )
     )
   ),
@@ -705,15 +679,15 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
+      'testing_date', '2026-03-12',
+      'data_source', 'catalogue',
       'chromatogram_profile', 'default',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP.',
       'show_product_placeholder', true,
       'placeholder_caption', 'Batch photograph slot—upload via registry when available.',
       'additional_tests', jsonb_build_array('LC-MS identity', 'System suitability'),
       'peaks', jsonb_build_array(
-        jsonb_build_object('name', 'Semax', 'rt', 3.97, 'area_pct', 99.39),
-        jsonb_build_object('name', 'Polar trace', 'rt', 2.72, 'area_pct', 0.38),
-        jsonb_build_object('name', 'Baseline', 'rt', 6.11, 'area_pct', 0.23)
+        jsonb_build_object('name', 'Semax', 'rt', 3.97, 'area_pct', 99.39)
       )
     )
   ),
@@ -733,15 +707,15 @@ values
       'column', 'ZORBAX SB-C18, 4.6×150 mm, 3.5 µm',
       'method', 'Water / acetonitrile + 0.1% TFA, gradient',
       'detection', 'UV 214 nm',
+      'testing_date', '2026-03-25',
+      'data_source', 'catalogue',
       'chromatogram_profile', 'default',
       'notes', 'Research reference material — chain-of-custody retained per lab SOP.',
       'show_product_placeholder', true,
       'placeholder_caption', 'Batch photograph slot—upload via registry when available.',
       'additional_tests', jsonb_build_array('LC-MS identity', 'System suitability'),
       'peaks', jsonb_build_array(
-        jsonb_build_object('name', 'Selank', 'rt', 3.69, 'area_pct', 99.11),
-        jsonb_build_object('name', 'Shoulder', 'rt', 2.88, 'area_pct', 0.54),
-        jsonb_build_object('name', 'Late eluent', 'rt', 5.95, 'area_pct', 0.35)
+        jsonb_build_object('name', 'Selank', 'rt', 3.69, 'area_pct', 99.11)
       )
     )
   )

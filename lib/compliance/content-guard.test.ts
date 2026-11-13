@@ -8,10 +8,12 @@ const ROOT = join(process.cwd());
 
 const SCAN_DIRS = [
   "app/(marketing)",
+  "app/(portal)",
   "components/marketing",
   "components/compliance",
   "components/verify",
   "components/certificates",
+  "components/dashboard",
   "lib/compliance",
 ];
 
@@ -35,6 +37,8 @@ const RISKY_PHRASES = [
   "you can trust",
   "verified customer",
   "5 out of 5 stars",
+  "Ampoulabs",
+  "all listed tests belong",
 ];
 
 function collectFiles(dir: string): string[] {

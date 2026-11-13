@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import { AmpoulabsNote } from "@/components/certificates/ampoulabs-note";
 import { CertificatesTable } from "@/components/dashboard/certificates-table";
 import { getMyCertificates } from "@/lib/data/certificates";
 
@@ -19,7 +18,6 @@ export default async function CertificatesPage() {
           Certificates you created in the Lab Portal. Public verification works
           for anyone with the code — no login required.
         </p>
-        <AmpoulabsNote className="mt-4" />
         <div className="mt-8">
           <CertificatesTable certificates={certificates} />
         </div>

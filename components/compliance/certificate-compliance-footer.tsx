@@ -2,6 +2,7 @@ import {
   MANUAL_REGISTRY_ENTRY_DISCLAIMER,
   OUTSOURCED_TEST_ROUTING_NOTE,
   PENDING_REGISTRY_REVIEW_NOTE,
+  REGISTRY_QA_ATTESTATION,
   RESEARCH_USE_ONLY_SHORT,
   VERIFICATION_REGISTRY_DISCLAIMER,
 } from "@/lib/compliance/disclaimers";
@@ -40,6 +41,7 @@ export function CertificateComplianceFooter({
           {PENDING_REGISTRY_REVIEW_NOTE}
         </p>
       ) : null}
+      <p className={noteClass}>{REGISTRY_QA_ATTESTATION}</p>
       <p className={noteClass}>{MANUAL_REGISTRY_ENTRY_DISCLAIMER}</p>
       <p className={noteClass}>
         <span className="font-semibold text-slate-800">Partner laboratory note:</span>{" "}

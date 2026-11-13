@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 
-import { AmpoulabsNote } from "@/components/certificates/ampoulabs-note";
 import { NewTestForm } from "@/components/dashboard/new-test-form";
 
 export const metadata: Metadata = {
@@ -19,7 +18,6 @@ export default function NewLabTestPage() {
           , with <span className="font-mono">-ETX</span> when endotoxin is
           selected).
         </p>
-        <AmpoulabsNote className="mt-4" />
         <div className="mt-8 rounded-2xl border border-border bg-[var(--bg-elevated)] p-6 shadow-[var(--shadow-card)] lg:p-8">
           <NewTestForm />
         </div>

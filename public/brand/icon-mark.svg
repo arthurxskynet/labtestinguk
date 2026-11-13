@@ -1,0 +1,9 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Verifypeps">
+  <rect width="32" height="32" fill="#080d14"/>
+  <path d="M6 24 L12.5 16.5 L18 11 L24 6" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="6" cy="24" r="3.75" fill="#00c4b4"/>
+  <circle cx="12.5" cy="16.5" r="3.75" fill="#00c4b4"/>
+  <circle cx="18" cy="11" r="3.75" fill="#00c4b4"/>
+  <circle cx="24" cy="6" r="4.25" stroke="#00c4b4" stroke-width="2.25" fill="#080d14"/>
+  <path d="M22.2 6.2 L24 8.4 L27.1 4.2" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

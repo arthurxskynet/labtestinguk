@@ -51,7 +51,10 @@ function buildAudit(sql: string): AuditRow[] {
     const componentCount = countComponents(section);
     const expectedDominantCount = componentCount >= 2 ? componentCount : 1;
     const savedPeakCount = countPeaks(section);
-    const pass = componentCount >= 2 ? savedPeakCount === componentCount : savedPeakCount >= 1;
+    const pass =
+      componentCount >= 2
+        ? savedPeakCount === componentCount
+        : savedPeakCount === 1;
     return { code, componentCount, expectedDominantCount, savedPeakCount, pass };
   });
 }
@@ -62,6 +65,14 @@ describe("dataset audit gate", () => {
     const failingRows = report.filter((row) => !row.pass);
 
     expect(report.length).toBeGreaterThan(20);
+    expect(failingRows).toEqual([]);
+  });
+
+  it("reports strict component-count contract compliance in Apoulabs catalogue", () => {
+    const report = buildAudit(readSql("migration_apoulabs_catalogue.sql"));
+    const failingRows = report.filter((row) => !row.pass);
+
+    expect(report.length).toBe(12);
     expect(failingRows).toEqual([]);
   });
 });

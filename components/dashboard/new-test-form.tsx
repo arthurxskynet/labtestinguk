@@ -161,12 +161,12 @@ export function NewTestForm() {
                       type="number"
                       step="0.0001"
                       min={99.11}
-                      max={99.86}
+                      max={99.92}
                       {...field}
                       value={field.value ?? ""}
                     />
                   </FormControl>
-                  <FormDescription>Use a value between 99.11 and 99.86.</FormDescription>
+                  <FormDescription>Use a value between 99.11 and 99.92.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -188,7 +188,7 @@ export function NewTestForm() {
               </div>
               <p className="text-xs text-muted-foreground">
                 Record each analyte separately. Every purity value must be between
-                99.11 and 99.86.
+                99.11 and 99.92.
               </p>
               {componentPurity.fields.map((field, index) => (
                 <div
@@ -219,7 +219,7 @@ export function NewTestForm() {
                             type="number"
                             step="0.0001"
                             min={99.11}
-                            max={99.86}
+                            max={99.92}
                             {...field}
                             value={field.value ?? ""}
                           />

@@ -37,12 +37,16 @@ export const PORTAL_ATTESTATION_LABEL =
 export const ENDOTOXIN_REQUEST_NOTE =
   "Endotoxin (LAL) requested — result recorded separately when returned.";
 
+export const REGISTRY_QA_ATTESTATION =
+  "Record issued under the Verifypeps registry QA workflow for research documentation.";
+
 /** Compact disclaimer lines for PDF export footers. */
 export function getCertificateCompliancePdfLines(options?: {
   isPendingReview?: boolean;
   isPortalSubmission?: boolean;
 }): string[] {
   const lines = [
+    REGISTRY_QA_ATTESTATION,
     MANUAL_REGISTRY_ENTRY_DISCLAIMER,
     OUTSOURCED_TEST_ROUTING_NOTE,
     VERIFICATION_REGISTRY_DISCLAIMER,

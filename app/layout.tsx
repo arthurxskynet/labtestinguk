@@ -33,10 +33,11 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://verifypeps.com"),
-  icons: {
-    icon: [{ url: "/brand/favicon-square.png", type: "image/png" }],
-    shortcut: ["/brand/favicon-square.png"],
-    apple: [{ url: "/brand/favicon-square.png" }],
+  applicationName: "Verifypeps",
+  appleWebApp: {
+    capable: true,
+    title: "Verifypeps",
+    statusBarStyle: "black-translucent",
   },
   title: {
     default:

@@ -67,7 +67,7 @@ describe("CertificateViewer", () => {
 
     expect(chartPeaks).toHaveLength(1);
     expect(chartPeaks[0]?.name).toBe("Retatrutide");
-    expect(screen.getByText("Peak table")).not.toBeNull();
+    expect(screen.getByText("Principal peak integration")).not.toBeNull();
     expect(screen.getAllByRole("row").length).toBeGreaterThan(1);
   });
 
